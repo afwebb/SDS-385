@@ -49,13 +49,13 @@ A.) [Algebra for this problem is here](image.png)
 B.) [The code for this part is here](week1/ex2.py)
 
 The likliehood function for several numbers of iterations look like this:
-<img src="https://github.com/afwebb/SDS-385/blob/master/week1/deepest_descent_100.pdf" width="200">
+<img src="https://github.com/afwebb/SDS-385/blob/master/week1/deepest_descent_100.png" width="200">
 
 ```python
 Accuracy of prediction: 0.817
 ```
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/week1/deepest_descent_100000.pdf" width="200">
+<img src="https://github.com/afwebb/SDS-385/blob/master/week1/deepest_descent_100000.png" width="200">
 
 ```python
 Accuracy of prediction: 0.878
