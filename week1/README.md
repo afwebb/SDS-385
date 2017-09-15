@@ -50,7 +50,7 @@ B.) [The code for this part is here](week1/ex2.py)
 
 The likliehood function for several numbers of iterations look like this:
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/week1/deepest_descent_100.png" width="500">
+<img src="https://github.com/afwebb/SDS-385/blob/master/week1/deepest_descent_1000.png" width="500">
 
 ```python
 Accuracy of prediction: 0.817
