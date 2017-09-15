@@ -44,6 +44,18 @@ Sparse Solver: 0.325119018555
 
 ## Generalized Linear Models
 
-A.)
+A.) [Algebra for this problem is here](image.png)
 
+B.) [The code for this part is here](week1/ex2.py)
+
+The likliehood function for several numbers of iterations look like this:
+![](deepest_descent_100000.pdf)
+```python
+Accuracy of prediction: 0.817
+```
+
+![](week1/deepest_descent_100000.pdf)
+```python
+Accuracy of prediction: 0.878
+```
 
