@@ -14,7 +14,7 @@ X = np.random.random((n, p))
 Y = np.random.random(n)
 W = np.random.random((n,n))
 
-#Solve for beta using inverse matrix method
+#Solve for vectr b for weighted y=Xb using inverse matrix method given X nXp matrix, W nXn matrix, and Y vector
 def inv_solve(X, Y, W):
     XWX = np.matmul(X.transpose(), np.matmul(W, X))
     inv_XWX = np.linalg.inv(XWX)
@@ -32,14 +32,17 @@ def sparse_solve(X, Y, W):
     X = csr_matrix(X)
     return spsolve(X, Y)
 
+#calculate the time to carry out function f
 def time_solve(f, X, Y, W):
     start_inv = time.time()
     res = f(X, Y, W)
     return res, time.time()-start_inv
 
+#Run the solve
 b_inv, inv_time = time_solve(inv_solve, X, Y, W)
 b_qr, qr_time = time_solve(comp_solve, X, Y, W)
 
+#check if solutions match, output time if so
 if b_inv.all()==b_qr.all():
     print "Solutions match!"
     print "Inverse solve took: "+str(inv_time)
