@@ -42,5 +42,8 @@ QR Decomposition Solve took: 5.5008699894
 Sparse Solver: 0.325119018555
 ```
 
+## Generalized Linear Models
+
+A.)
 
 
