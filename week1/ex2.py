@@ -70,7 +70,7 @@ for iter in [100, 1000, 10000, 100000]:
 
     plt.ylabel('-log likliehood')
     plt.xlabel('Iteration')
-    plt.savefig('deepest_descent_'+str(iter)+'.pdf', format = 'pdf')
+    plt.savefig('deepest_descent_'+str(iter)+'.png', format = 'png')
 
     b = b/np.linalg.norm(b, ord=1)
     print "Number of iterations: "+str(iter)
