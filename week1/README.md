@@ -65,3 +65,19 @@ I ended up getting the step size through trial and error. I'd like to figure a b
 
 I also am not convinced my W matrix represents a real probability. In order to get reasonable answers, I normalized my X.b matrix, but this suspect. If I got that right, I might be able to do better than ~88% prediction rate.
 
+C.)
+
+Newton's method to calculate f''
+
+D.) The results of using Newton's method are shown here:
+
+<img src="https://github.com/afwebb/SDS-385/blob/master/week1/newton.png" width="500">
+
+E.) Newton's method requires more calculation, but fewer iterations. For complex functions, deepest descent is pre\
+ferable. But, assuming the function is sufficiently simple, newton's method will be much quicker. Further, New\
+ton's method has a natural step size, which gives it a large advantage over deepest descent.
+
+In this case, I had to spend some time figuring out a good step size. The (better) alternative, using a variab\
+le step-size based on the matrices given, would require more effort.
+
+
