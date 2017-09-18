@@ -46,7 +46,7 @@ Sparse Solver: 0.325119018555
 
 A.) [Algebra for this problem is here](image.png)
 
-B.) [The code for this part is here](week1/ex2.py)
+B.) [The code for the rest of this excersize is here](week1/ex2.py)
 
 The likliehood function for several numbers of iterations look like this:
 
@@ -65,7 +65,7 @@ I ended up getting the step size through trial and error. I'd like to figure a b
 
 I also am not convinced my W matrix represents a real probability. In order to get reasonable answers, I normalized my X.b matrix, but this suspect. If I got that right, I might be able to do better than ~88% prediction rate.
 
-C.) Performin the Taylor series expansion give a a value of W' = X_t W X, and z = Xb_0 + Inv(W')(y-W)
+C.) Performing the Taylor series expansion give a a value of W' = X_t W X, and z = Xb_0 + Inv(W')(y-W)
 
 D.) The results of using Newton's method are shown here:
 
