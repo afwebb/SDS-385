@@ -18,11 +18,28 @@ def calc_l(X, y, b):
     l = -(np.dot(y.transpose(), np.log(w))+np.dot((1-y).transpose(), np.log(1-w)))
     return l
 
+#Return the Hessian matrix for a given w and X
+def calc_hessian(X, w):
+    w_vec = np.dot(w, 1-w)
+    wx = np.dot(w_vec, X)
+    return np.dot(X.transpose(), wx)
+
 #Take the matrix X, vectors y and b, an integer number of iterations and a float step size. Returns a fit value of b. Give the likliehood at each step
 def run_descent(X, y, b, num_iter, step_size, l):
     for i in range(num_iter):
         b -= calc_slope(X, y, b)*step_size
         l.append(calc_l(X, y, b))
+    return b, l
+
+#Calculate b using newton's method 
+def run_newton(X, y, b, num_iter, l):
+    for i in range(num_iter):
+        w = calc_w(X, b)
+        hessian = calc_hessian(X, w)
+        slope = calc_slope(X, y, b)
+        b-= np.linalg.solve(hessian, slope)
+        l.append(calc_l(X, y, b))
+
     return b, l
 
 #Test if the b found correctly predicts B or M, given X, y and calculated b. Return fraction of success
@@ -61,9 +78,12 @@ b = np.random.rand(len(X[0]))
 b = b/np.linalg.norm(b, ord=1)
 
 #Run deepest descent for a few different numbers of iterations. Plot the l that results. Print the accuracy of the calculated b vector
-for iter in [100, 1000, 10000, 100000]:
+for iter in [100, 1000, 10000, "newton"]:
     l = []
-    b, l = run_descent(X, y, b, iter, 3000, l)
+    if iter=="newton":
+        b,l = run_newton(X, y, b, 10000, l)
+    else:
+        b, l = run_descent(X, y, b, iter, 3000, l)
 
     plt.figure()
     plt.plot(l)
@@ -75,4 +95,3 @@ for iter in [100, 1000, 10000, 100000]:
     b = b/np.linalg.norm(b, ord=1)
     print "Number of iterations: "+str(iter)
     print "Accuracey of prediction: "+str(predict_acc(X, y, b))
-
