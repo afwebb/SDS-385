@@ -71,7 +71,7 @@ Newton's method to calculate f''
 
 D.) The results of using Newton's method are shown here:
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/week1/newton.png" width="500">
+<img src="https://github.com/afwebb/SDS-385/blob/master/week1/deepest_descent_newton.png" width="500">
 
 E.) Newton's method requires more calculation, but fewer iterations. For complex functions, deepest descent is pre\
 ferable. But, assuming the function is sufficiently simple, newton's method will be much quicker. Further, New\
