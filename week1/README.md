@@ -46,7 +46,7 @@ Sparse Solver: 0.325119018555
 
 A.) [Algebra for this problem is here](image.png)
 
-B.) [The code for the rest of this excersize is here](week1/ex2.py)
+B.) [The code for the rest of this excersize is here](ex2.py)
 
 The likliehood function for several numbers of iterations look like this:
 
