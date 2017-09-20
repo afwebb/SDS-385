@@ -74,16 +74,16 @@ y = y.values
 X = dataSet.drop(1, 1).values
 X = X/np.linalg.norm(X, ord=1)
 
-b = np.random.rand(len(X[0]))
-b = b/np.linalg.norm(b, ord=1)
+b_orig = np.random.rand(len(X[0]))
+#b = b/np.linalg.norm(b, ord=1)
 
 #Run deepest descent for a few different numbers of iterations. Plot the l that results. Print the accuracy of the calculated b vector
 for iter in [100, 1000, 10000, "newton"]:
     l = []
     if iter=="newton":
-        b,l = run_newton(X, y, b, 10000, l)
+        b,l = run_newton(X, y, b_orig, 10000, l)
     else:
-        b, l = run_descent(X, y, b, iter, 3000, l)
+        b, l = run_descent(X, y, b_orig, iter, 3000, l)
 
     plt.figure()
     plt.plot(l)

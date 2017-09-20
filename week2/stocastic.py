@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt
 def calc_w(X, b):
     return 1/(1 + np.exp(-np.dot(X, b)))
 
-#Calculate the (vector) slope of the cost function for a given X, y and b
-def calc_gradient(X, y, b):
-    w = calc_w(X, b)
-    return np.dot(X.transpose(), (w-y))
+#Calculate the slope of the cost function for a single data point, i
+def calc_gradient(X, y, b, i):
+    w = calc_w(X[i], b)
+    return np.dot(X[i], (w-y[i]))
 
 #Calculate likliehood function
 def calc_l(X, y, b):
@@ -18,11 +18,34 @@ def calc_l(X, y, b):
     l = -(np.dot(y.transpose(), np.log(w))+np.dot((1-y).transpose(), np.log(1-w)))
     return l
 
-#Take the matrix X, vectors y and b, an integer number of iterations and a float step size. Returns a fit value of b. Give the likliehood at each step
-def run_descent(X, y, b, num_iter, step_size, l):
-    for i in range(num_iter):
-        b -= calc_gradient(X, y, b)*step_size
+#Check the convergance of the log likliehood function within some criteria, e. Return true if so
+def test_converge(l, e):
+    if len(l)>3:
+        if (l[len(l)-1]-l[len(l)-2])/l[len(l)-1] < e:
+            return True
+    else:
+        return False
+
+#shuffle data after each epoch, return updated X, y
+def shuffle(X, y):
+    p = np.random.permutation(len(y))
+    return X[p], y[p]
+
+#Perform gradient descent on b. Give the likliehood at each step.  Select a single data point each time, shuffle after running through entire set
+def run_descent(X, y, b, e, step_size, l):
+    #for i in range(num_iter):
+    i = 0
+    while not test_converge(l, e):
+        j = i%len(y)
+        if j==0:
+            X, y = shuffle(X, y)
+        b -= calc_gradient(X, y, b, j)*step_size
         l.append(calc_l(X, y, b))
+        
+        i+=1
+        if i>1000000:
+            break
+
     return b, l
 
 #Test if the b found correctly predicts B or M, given X, y and calculated b. Return fraction of success
@@ -32,7 +55,7 @@ def predict_acc(X, y, b):
     p = []
 
     xb = np.dot(X, b)
-    xb = xb/np.linalg.norm(xb, ord=1)
+    #xb = xb/np.linalg.norm(xb, ord=1)
     w_pred = 1/(1 + np.exp(-xb))
 
     for i in range(len(w_pred)):
@@ -55,26 +78,24 @@ y = dataSet[1].map({'M':1, 'B':0})
 y = y.values
 #Use the rest for X. Scale X by the size of the vector
 X = dataSet.drop(1, 1).values
-X = X/np.linalg.norm(X, ord=1)
+#X = X/np.linalg.norm(X, ord=1)
 
-b = np.random.rand(len(X[0]))
-b = b/np.linalg.norm(b, ord=1)
+b_orig = np.random.rand(len(X[0]))
+#b = b/np.linalg.norm(b, ord=1)
 
 #Run deepest descent for a few different numbers of iterations. Plot the l that results. Print the accuracy of the calculated b vector
-for iter in [100, 1000, 10000, "newton"]:
+for step_size in [0.001, 0.01, 0.1, 1, 10]:
     l = []
-    if iter=="newton":
-        b,l = run_newton(X, y, b, 10000, l)
-    else:
-        b, l = run_descent(X, y, b, iter, 3000, l)
+
+    b, l = run_descent(X, y, b_orig, 0.001, step_size, l)
 
     plt.figure()
     plt.plot(l)
 
     plt.ylabel('-log likliehood')
     plt.xlabel('Iteration')
-    plt.savefig('stocastic_'+str(iter)+'.png', format = 'png')
+    plt.savefig('result_'+str(step_size)+'.png', format = 'png')
 
     b = b/np.linalg.norm(b, ord=1)
-    print "Number of iterations: "+str(iter)
+    print "Step Size: "+str(step_size)
     print "Accuracey of prediction: "+str(predict_acc(X, y, b))
