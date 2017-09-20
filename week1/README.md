@@ -56,7 +56,7 @@ The likliehood function for several numbers of iterations look like this:
 Accuracy of prediction: 0.817
 ```
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/week1/deepest_descent_100000.png" width="500">
+<img src="https://github.com/afwebb/SDS-385/blob/master/week1/deepest_descent_10000.png" width="500">
 
 ```python
 Accuracy of prediction: 0.878
