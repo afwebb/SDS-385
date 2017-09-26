@@ -2,6 +2,7 @@ import scipy
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn import preprocessing
 
 #Calculate w for a given b and x
 def calc_w(X, b):
@@ -16,6 +17,7 @@ def calc_gradient(X, y, b, i):
 def calc_l(X, y, b):
     w = calc_w(X, b)
     l = -(np.dot(y.transpose(), np.log(w))+np.dot((1-y).transpose(), np.log(1-w)))
+    print l
     return l
 
 #Check the convergance of the log likliehood function within some criteria, e. Return true if so
@@ -33,18 +35,17 @@ def shuffle(X, y):
 
 #Perform gradient descent on b. Give the likliehood at each step.  Select a single data point each time, shuffle after running through entire set
 def run_descent(X, y, b, e, step_size, l):
-    #for i in range(num_iter):
-    i = 0
-    while not test_converge(l, e):
+    for i in range(e):
+    #i = 0
+    #while not test_converge(l, e):
         j = i%len(y)
         if j==0:
             X, y = shuffle(X, y)
         b -= calc_gradient(X, y, b, j)*step_size
         l.append(calc_l(X, y, b))
-        
-        i+=1
-        if i>1000000:
-            break
+        #i+=1
+        #if i>1000000:
+        #    break
 
     return b, l
 
@@ -78,16 +79,18 @@ y = dataSet[1].map({'M':1, 'B':0})
 y = y.values
 #Use the rest for X. Scale X by the size of the vector
 X = dataSet.drop(1, 1).values
+min_max_scaler = preprocessing.MinMaxScaler()
+X = min_max_scaler.fit_transform(X)
 #X = X/np.linalg.norm(X, ord=1)
 
 b_orig = np.random.rand(len(X[0]))
-#b = b/np.linalg.norm(b, ord=1)
+#b_orig = b_orig/np.linalg.norm(b_orig, ord=1)
 
 #Run deepest descent for a few different numbers of iterations. Plot the l that results. Print the accuracy of the calculated b vector
-for step_size in [0.001, 0.01, 0.1, 1, 10]:
+for step_size in [0.001, 0.01, 0.1, 1]:
     l = []
 
-    b, l = run_descent(X, y, b_orig, 0.001, step_size, l)
+    b, l = run_descent(X, y, b_orig, 10000, step_size, l)
 
     plt.figure()
     plt.plot(l)

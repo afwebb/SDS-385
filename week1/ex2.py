@@ -20,9 +20,11 @@ def calc_l(X, y, b):
 
 #Return the Hessian matrix for a given w and X
 def calc_hessian(X, w):
-    w_vec = np.dot(w, 1-w)
-    wx = np.dot(w_vec, X)
-    return np.dot(X.transpose(), wx)
+    #w_vec = np.dot(w, 1-w)
+    w_vec = w*(1-w)
+    wx = np.dot(X.transpose(), w*(1-w))
+    #wx = w*(1-w)*X
+    return np.dot(wx, X)
 
 #Take the matrix X, vectors y and b, an integer number of iterations and a float step size. Returns a fit value of b. Give the likliehood at each step
 def run_descent(X, y, b, num_iter, step_size, l):
