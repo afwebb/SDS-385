@@ -22,7 +22,7 @@ while not test_converge(l, e):
 ```
 
 And the results I get:
-<img src="https://github.com/afwebb/SDS-385/blob/master/week2/results_0.01.png" width="500">
+<img src="https://github.com/afwebb/SDS-385/blob/master/week2/result_0.01.png" width="500">
 ```python
 Accuracey: 0.94
 ```
