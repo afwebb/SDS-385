@@ -17,16 +17,20 @@ def calc_gradient(X, y, b, i):
 def calc_l(X, y, b):
     w = calc_w(X, b)
     l = -(np.dot(y.transpose(), np.log(w))+np.dot((1-y).transpose(), np.log(1-w)))
-    print l
+    #print l
     return l
 
 #Check the convergance of the log likliehood function within some criteria, e. Return true if so
 def test_converge(l, e):
-    if len(l)>3:
-        if (l[len(l)-1]-l[len(l)-2])/l[len(l)-1] < e:
+    if len(l)>5: 
+        conv = (l[len(l)-1]-l[len(l)-2])/l[len(l)-1]
+        #print conv
+        if abs(conv) < e:
             return True
+        else:
+            return False
     else:
-        return False
+        return False 
 
 #shuffle data after each epoch, return updated X, y
 def shuffle(X, y):
@@ -35,17 +39,18 @@ def shuffle(X, y):
 
 #Perform gradient descent on b. Give the likliehood at each step.  Select a single data point each time, shuffle after running through entire set
 def run_descent(X, y, b, e, step_size, l):
-    for i in range(e):
-    #i = 0
-    #while not test_converge(l, e):
+    #for i in range(e):
+    i = 0
+    while not test_converge(l, e):
         j = i%len(y)
         if j==0:
             X, y = shuffle(X, y)
         b -= calc_gradient(X, y, b, j)*step_size
         l.append(calc_l(X, y, b))
-        #i+=1
-        #if i>1000000:
-        #    break
+        i+=1
+        
+        if i>1000000:
+            break
 
     return b, l
 
@@ -87,10 +92,10 @@ b_orig = np.random.rand(len(X[0]))
 #b_orig = b_orig/np.linalg.norm(b_orig, ord=1)
 
 #Run deepest descent for a few different numbers of iterations. Plot the l that results. Print the accuracy of the calculated b vector
-for step_size in [0.001, 0.01, 0.1, 1]:
+for step_size in [0.01, 0.1, 1]:
     l = []
 
-    b, l = run_descent(X, y, b_orig, 10000, step_size, l)
+    b, l = run_descent(X, y, b_orig, 0.00001, step_size, l)
 
     plt.figure()
     plt.plot(l)

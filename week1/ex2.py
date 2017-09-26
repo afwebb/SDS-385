@@ -2,6 +2,7 @@ import scipy
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn import preprocessing
 
 #Calculate w for a given b and x
 def calc_w(X, b):
@@ -22,9 +23,14 @@ def calc_l(X, y, b):
 def calc_hessian(X, w):
     #w_vec = np.dot(w, 1-w)
     w_vec = w*(1-w)
-    wx = np.dot(X.transpose(), w*(1-w))
-    #wx = w*(1-w)*X
-    return np.dot(wx, X)
+    #wx = np.dot(X.transpose(), np.dot(w, (1-w)))
+    wx = np.dot(w*(1-w), X)
+    
+    #return np.dot(X, X*w*(1-w))
+
+    w_vector = w * (1-w)
+    
+    return np.dot(X.T, X*w_vector)
 
 #Take the matrix X, vectors y and b, an integer number of iterations and a float step size. Returns a fit value of b. Give the likliehood at each step
 def run_descent(X, y, b, num_iter, step_size, l):
@@ -74,18 +80,20 @@ y = dataSet[1].map({'M':1, 'B':0})
 y = y.values
 #Use the rest for X. Scale X by the size of the vector
 X = dataSet.drop(1, 1).values
-X = X/np.linalg.norm(X, ord=1)
+min_max_scaler = preprocessing.MinMaxScaler()
+X = min_max_scaler.fit_transform(X)
+#X = X/np.linalg.norm(X, ord=1)
 
 b_orig = np.random.rand(len(X[0]))
 #b = b/np.linalg.norm(b, ord=1)
 
 #Run deepest descent for a few different numbers of iterations. Plot the l that results. Print the accuracy of the calculated b vector
-for iter in [100, 1000, 10000, "newton"]:
+for iter in [0.1, 1, 10, "newton"]:
     l = []
     if iter=="newton":
-        b,l = run_newton(X, y, b_orig, 10000, l)
+        b,l = run_newton(X, y, b_orig, 1000, l)
     else:
-        b, l = run_descent(X, y, b_orig, iter, 3000, l)
+        b, l = run_descent(X, y, b_orig, 1000, iter, l)
 
     plt.figure()
     plt.plot(l)
