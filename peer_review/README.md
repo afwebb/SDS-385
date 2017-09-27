@@ -1,8 +1,6 @@
 # Peer Review for Bowen Hua
 
-## General Comments
-
-## ex1.pdf
+## [ex1.pdf](https://github.com/bowenhua/SDS_385/blob/master/ex1/ex1.pdf)
 
 I appreciate you took the time to write all this up in latex.
 
@@ -21,7 +19,7 @@ This would require some reworking of your code, but if you had to do something s
 
 Your comments here are fairly sparse. While each function is labeled, a brief description of what each one does would be nice.
 
-## Logit.py
+## [Logit.py](https://github.com/bowenhua/SDS_385/blob/master/ex1/logit.py)
 Overall, your code is well written and easy to follow. Its well commented, though you could add a few more. 
 
 When running the code, I think you could streamline things by looping over several step sizes. Rather than doing this:
@@ -101,3 +99,7 @@ There's only one line of code that's different between these three cases. I thin
 ```
 
 I do like that you managed to have newton's method run within the same function as the rest. You also came up with a really elegant way to test the convergence of the loss function. Your plot looks really good, especially how you fit the results for each of the different step sizes you used onto one graph. I also like how you tested the accuracey of the prediction, and you managed to do it in a very simple way.
+
+## General Comments
+
+I think it would be helpful if you gave your files more descriptive names. That way, if you come back to this code in a few weeks or months, you can have an idea of what each program does, rather than having to look through the code.
