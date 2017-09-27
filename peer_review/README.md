@@ -2,6 +2,10 @@
 
 ## General Comments
 
+## ex1.pdf
+
+I appreciate you took the time to write all this up in latex.
+
 ## Logit.py
 Overall, your code is well written and easy to follow. Its well commented, though you could add a few more. 
 
