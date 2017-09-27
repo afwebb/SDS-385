@@ -3,6 +3,7 @@
 ## General Comments
 
 ## Logit.py
+Overall, your code is well written and easy to follow. Its well commented, though you could add a few more. 
 
 When running the code, I think you could streamline things by looping over several step sizes. Rather than doing this:
 
@@ -80,4 +81,4 @@ There's only one line of code that's different between these three cases. I thin
     costs.append(cost.flatten())
 ```
 
-I do like that you managed to have newton's method run within the same function as the rest. You also came up with a really elegant way to test the convergence of the loss function.
+I do like that you managed to have newton's method run within the same function as the rest. You also came up with a really elegant way to test the convergence of the loss function. Your plot looks really good, especially how you fit the results for each of the different step sizes you used onto one graph. I also like how you tested the accuracey of the prediction, and you managed to do it in a very simple way.
