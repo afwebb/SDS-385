@@ -6,6 +6,21 @@
 
 I appreciate you took the time to write all this up in latex.
 
+## [linear_system.py](https://github.com/bowenhua/SDS_385/blob/master/ex1/linear_system.py)
+
+Around line 59, you calculate the time it takes to run a function several different times. I think it would be worth defining a function that does this for you, rather than you having to repeat it each time. Here's more or less what I did:
+
+```python
+def time_solve(f, X, Y, W):
+    start = time.time()
+    result = f(X, Y, W)
+    return result, time.time()-start_inv
+```
+
+This would require some reworking of your code, but if you had to do something similar in the future, I think it would save you some time if you based it around something like this.    
+
+Your comments here are fairly sparse. While each function is labeled, a brief description of what each one does would be nice.
+
 ## Logit.py
 Overall, your code is well written and easy to follow. Its well commented, though you could add a few more. 
 
