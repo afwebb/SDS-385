@@ -16,18 +16,12 @@ def calc_slope(X, y, b):
 #Calculate likliehood function
 def calc_l(X, y, b):
     w = calc_w(X, b)
-    l = -(np.dot(y.transpose(), np.log(w))+np.dot((1-y).transpose(), np.log(1-w)))
-    return l
+    l = -(np.nan_to_num(np.dot(y.transpose(), np.log(w)))+np.nan_to_num(np.dot((1-y).transpose(), np.log(1-w))))
+    return l[0,0]
 
 #Return the Hessian matrix for a given w and X
-def calc_hessian(X, w):
-    #w_vec = np.dot(w, 1-w)
-    w_vec = w*(1-w)
-    #wx = np.dot(X.transpose(), np.dot(w, (1-w)))
-    wx = np.dot(w*(1-w), X)
-    
-    #return np.dot(X, X*w*(1-w))
-
+def calc_hessian(X, b):
+    w = calc_w(X, b)
     w_vector = w * (1-w)
     
     return np.dot(X.T, X*w_vector)
@@ -43,7 +37,7 @@ def run_descent(X, y, b, num_iter, step_size, l):
 def run_newton(X, y, b, num_iter, l):
     for i in range(num_iter):
         w = calc_w(X, b)
-        hessian = calc_hessian(X, w)
+        hessian = calc_hessian(X, b)
         slope = calc_slope(X, y, b)
         b-= np.linalg.solve(hessian, slope)
         l.append(calc_l(X, y, b))
@@ -78,25 +72,29 @@ dataSet = pd.read_csv('wdbc.csv',header=None, usecols=range(1,12))
 #Select the first column for y, convert to binary array
 y = dataSet[1].map({'M':1, 'B':0})
 y = y.values
+y = y.reshape(y.shape[0],1)
+
 #Use the rest for X. Scale X by the size of the vector
 X = dataSet.drop(1, 1).values
+#scaler = preprocessing.StandardScaler().fit(X)
+#X = scaler.transform(X)
 min_max_scaler = preprocessing.MinMaxScaler()
 X = min_max_scaler.fit_transform(X)
-#X = X/np.linalg.norm(X, ord=1)
+X = np.insert(X, 10, 1, axis=1)
 
-b_orig = np.random.rand(len(X[0]))
-#b = b/np.linalg.norm(b, ord=1)
+b_orig = np.random.rand(len(X[0]),1)
 
 #Run deepest descent for a few different numbers of iterations. Plot the l that results. Print the accuracy of the calculated b vector
-for iter in [0.1, 1, 10, "newton"]:
+for iter in [0.001, 0.01, 0.1, "newton"]:
     l = []
+    b = b_orig.copy()
     if iter=="newton":
-        b,l = run_newton(X, y, b_orig, 1000, l)
+        b, l = run_newton(X, y, b, 10, l)
     else:
-        b, l = run_descent(X, y, b_orig, 1000, iter, l)
+        b, l = run_descent(X, y, b, 1000, iter, l)
 
     plt.figure()
-    plt.plot(l)
+    plt.plot(l, label = str(iter))
 
     plt.ylabel('-log likliehood')
     plt.xlabel('Iteration')
@@ -105,3 +103,6 @@ for iter in [0.1, 1, 10, "newton"]:
     b = b/np.linalg.norm(b, ord=1)
     print "Number of iterations: "+str(iter)
     print "Accuracey of prediction: "+str(predict_acc(X, y, b))
+
+    b = None
+    
