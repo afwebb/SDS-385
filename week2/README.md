@@ -41,6 +41,8 @@ Accuracey: 0.93
 
 This results are comparable to using full gradient descent, but with much less computation. I set the convergense requirement to 0.01% change in likliehood, and still for each step size, the data set is ran over less than twice before the algorithm converges.
 
+A step size of 0.01 seems to be too small: Even with a fairly stict convergence requirement, the likliehood function changes so little with each iteration it meets the convergence requirement despite not quite hitting a minimum. This shows up in the graph, and the accuracey of the result. 
+
 
 
 
