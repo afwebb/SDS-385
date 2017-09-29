@@ -2,9 +2,9 @@
 
 ## General Comments
 
-I went through the files you have in the ex1 folder, and provided comments for each file individually. It is a bit funny, we did take very similar approaches, especially on gradient descent. Which is to say, I like how you approached things. There were just a few places where I think you can streamline your code. I made a few comments about places you're copying and pasting where I'm not sure you need to.
+I went through the files you have in the ex1 folder, and provided comments for each file individually. It is a bit funny, we did take very similar approaches, especially on gradient descent. Which is to say, I like how you approached things. There were actually very few things I can see to improve, just a few places where I think you can streamline your code. I made a few comments about places you're copying and pasting where I'm not sure you need to.
 
-I think it would be helpful if you gave your files more descriptive names. That way, if you come back to this code in a few weeks or months, you can have an idea of what each program does, rather than having to look through the code.
+I think it would be helpful if you gave your files more descriptive names. "logit.py" doesn't tell me much about what the program does. That way, if you come back to this code in a few weeks or months, you can have an idea of what each program does, rather than having to look through the code. It would also make things easier for someone else looking at your repository. 
 
 Another thing you might consider is using markdown to display your results. The way you have it, written up in latex, is great, especially when it comes to equations, but I know latex can be a lot of work. Using markdown might save you some time, and it is nice having it show up right when someone goes to your repository.
 
@@ -35,12 +35,15 @@ def time_solve(f, X, Y, W):
     return result, time.time()-start_inv
 ```
 
-This would require some reworking of your code, but if you had to do something similar in the future, I think it would save you some time if you based it around something like this.    
+This would require some reworking of your code, but if you had to do something similar in the future, I think it would save you some time if you based it around something like this. And I think you could do something similar then you're running over several different densities.   
 
 Your comments here are fairly sparse. While each function is labeled, a brief description of what each one does would be nice.
 
+The way you've used several different sizes and shapes is great, and provides a good test of each of the methods you're using.
+
 ## [Logit.py](https://github.com/bowenhua/SDS_385/blob/master/ex1/logit.py)
-Overall, your code is well written and easy to follow. Its well commented, though you could add a few more. 
+
+Overall, your code is well written and easy to follow. I appreciate that you have a consistent style for the comments of each function. Its well commented, though you could add a few more. There are a few things you explain in your write up, like why you add a column of 1s to your x-matrix, that aren't clear reading through your code. A few short comments explaining why you're doing certain things would make your code easier to follow.
 
 When running the code, I think you could streamline things by looping over several step sizes. Rather than doing this:
 
