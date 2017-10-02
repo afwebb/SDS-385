@@ -16,7 +16,7 @@ def calc_gradient(X, y, b, i):
 #Calculate likliehood function
 def calc_l(X, y, b):
     w = calc_w(X, b)
-    l = -(np.dot(y.transpose(), np.log(w))+np.dot((1-y).transpose(), np.log(1-w)))
+    l = -(np.nan_to_num(np.dot(y.transpose(), np.log(w)))+np.nan_to_num(np.dot((1-y).transpose(), np.log(1-w))))
     #print l
     return l
 
