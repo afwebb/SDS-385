@@ -68,6 +68,8 @@ Accuracy of prediction: 0.949
 Accuracy of prediction: 0.908
 ```
 
+The results indicate the need for a small step size. Even using 0.1, the result is fairly noisy.
+
 C.) Performing the Taylor series expansion give a a value of W' = X_t W X, and z = Xb_0 + Inv(W')(y-W)
 
 D.) The results of using Newton's method are shown here:
@@ -78,11 +80,10 @@ D.) The results of using Newton's method are shown here:
 Accuracey of prediction: 0.949
 ```
 
-E.) Newton's method requires more calculation, but fewer iterations. For complex functions, deepest descent is pre\
-ferable. But, assuming the function is sufficiently simple, newton's method will be much quicker. Further, New\
-ton's method has a natural step size, which gives it a large advantage over deepest descent.
+This converges remarkebly quickly. It only takes four iterations to reach a minimum, compared to ~1000 for gradient descent.
 
-In this case, I had to spend some time figuring out a good step size. The (better) alternative, using a variab\
-le step-size based on the matrices given, would require more effort.
+E.) Newton's method requires more calculation, but fewer iterations. For complex functions, deepest descent is preferable. But, assuming the function is sufficiently simple, newton's method will be much quicker. Further, Newton's method has a natural step size, which gives it a large advantage over deepest descent.
+
+In this case, I had to spend some time figuring out a good step size. The (better) alternative, using a variable step-size based on the matrices given, would require more effort.
 
 
