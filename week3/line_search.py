@@ -12,24 +12,21 @@ def calc_w(X, b):
 def find_step_size(X, y, b_in, f_loss, f_search):
 
     b = b_in.copy()
-    s = 1
-    rho = 0.5
+    rho = 0.8
     c = 0.01
     s_vec = []
 
     for i in xrange(len(b)):
+        s = 1
         w = calc_w(X, b)
-        b += s*f_search(X[:,i], y, b[i])
         l_new = f_loss(X[:,i], y, b[i])
         l_old = l_new.copy()
-        print l_new
-        print l_old
-        print f_search(X[:,i], y, b[i])
-        while l_new > l_old + c*s*f_search(X[:,i], y, b[i]):
+        l_comp = l_new.copy()+ c*s*f_search(X[:,i], y, b[i])
+        while l_new > l_comp: 
             s = rho*s
-            b[i] += s*f_search(X[:,i], y, b[i])
+            b[i] -= s*f_search(X[:,i], y, b[i])
             l_new = f_loss(X[:,i], y, b[i])
-            print l_new
+            l_comp = l_old + c*s*f_search(X[:,i], y, b[i])
         s_vec.append(s)
     return s_vec
 
@@ -106,7 +103,6 @@ dataSet = pd.read_csv('wdbc.csv',header=None, usecols=range(1,12))
 #Select the first column for y, convert to binary array
 y = dataSet[1].map({'M':1, 'B':0})
 y = y.values
-#y = y.reshape(y.shape[0],1)
 
 #Use the rest for X. Scale X by the size of the vector
 X = dataSet.drop(1, 1).values
@@ -121,7 +117,7 @@ l = []
 b = b_orig.copy()
 
 step_size = find_step_size(X, y, b, calc_l, calc_gradient)
-b, l = run_descent(X, y, b, 0.001, step_size, l)
+b, l = run_descent(X, y, b, 0.0001, step_size, l)
 
 plt.figure()
 plt.plot(l)
