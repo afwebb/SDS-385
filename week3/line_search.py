@@ -19,13 +19,13 @@ def find_step_size(X, y, b_in, f_loss, f_search):
     for i in xrange(len(b)):
         s = 1
         w = calc_w(X, b)
-        l_new = f_loss(X[:,i], y, b[i])
-        l_old = l_new.copy()
-        l_comp = l_new.copy()+ c*s*f_search(X[:,i], y, b[i])
+        l_new = f_loss(X[:,i], y, b[i]+s)
+        l_old =  f_loss(X[:,i], y, b[i])
+        l_comp =  f_loss(X[:,i], y, b[i]) + c*s*f_search(X[:,i], y, b[i])
         while l_new > l_comp: 
             s = rho*s
             b[i] -= s*f_search(X[:,i], y, b[i])
-            l_new = f_loss(X[:,i], y, b[i])
+            l_new = f_loss(X[:,i], y, b[i]+s)
             l_comp = l_old + c*s*f_search(X[:,i], y, b[i])
         s_vec.append(s)
     return s_vec
