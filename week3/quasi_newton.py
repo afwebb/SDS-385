@@ -124,7 +124,7 @@ plt.plot(l)
 
 plt.ylabel('-log likliehood')
 plt.xlabel('Iteration')
-plt.savefig('result_linesearch.png', format = 'png')
+plt.savefig('result_qnewton.png', format = 'png')
 
 b = b/np.linalg.norm(b, ord=1)
 print "Step Size: "+str(step_size)
