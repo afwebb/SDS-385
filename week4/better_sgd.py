@@ -12,13 +12,17 @@ def calc_w(X, b):
 
 #Calculate the slope of the cost function for a single data point, i
 def calc_gradient(X, y, b):
+    lam = 0.1
     w = calc_w(X, b)
-    return X.T * (w-y) #np.dot(X.transpose(), (w-y))
+    return X.T * (w-y)/X.shape[0] + lam * (b > 0).astype(float) - lam * (b < 0).astype(float)
+    #return X.T * (w-y) #np.dot(X.transpose(), (w-y))
 
 #Calculate likliehood function
 def calc_l(X, y, b):
+    lam = 0.1
     w = calc_w(X, b)
-    l = -(np.nan_to_num(np.dot(y.transpose(), np.log(w)))+np.nan_to_num(np.dot((1-y).transpose(), np.log(1-w))))
+    #l = -(np.nan_to_num(np.dot(y.transpose(), np.log(w)))+np.nan_to_num(np.dot((1-y).transpose(), np.log(1-w))))
+    l = -(np.dot(y.T, np.log(w + 1e-7)) + np.dot((1 - y).T, np.log(1-w + 1e-7)))/X.shape[0] +  lam * np.linalg.norm(b, 1)
     #print l
     return l
 
@@ -41,19 +45,18 @@ def shuffle(X, y):
 
 #Perform gradient descent on b. Give the likliehood at each step.  Select a single data point each time, shuffle after running through entire set
 def run_descent(X, y, b, e, step_size, l):
-
+    batch_size = 1000
     hist_grad=0
     #while not test_converge(l, e):
     for i in xrange(len(y)/batch_size):
-        print (i+1)*batch_size
         if (i+1)*batch_size < len(y):
             X_temp = X[i*batch_size:(i+1)*batch_size]
             y_temp = y[i*batch_size:(i+1)*batch_size]
-            b_temp = b[i*batch_size:(i+1)*batch_size]
+            #b_temp = b[i*batch_size:(i+1)*batch_size]
         else:
             X_temp = X[i*batch_size:]
             y_temp = y[i*batch_size:]
-            b_temp = b[i*batch_size:]
+            #b_temp = b[i*batch_size:]
 
         #for j in xrange(10):
             #for i,k in zip(X_bat.col, X_bat.data):
@@ -61,10 +64,10 @@ def run_descent(X, y, b, e, step_size, l):
             #if j==0:
             #    X, y = shuffle(X, y)
         
-        grad_b = calc_gradient(X_temp, y_temp, b_temp)
+        grad_b = calc_gradient(X_temp, y_temp, b)
         hist_grad += np.square(grad_b)
-        b_temp -= grad_b*step_size*(1/np.sqrt(hist_grad + e))
-        b[i*batch_size:(i+1)*batch_size] = b_temp
+        b -= grad_b*step_size*(1/np.sqrt(hist_grad + e))
+        #b[i*batch_size:(i+1)*batch_size] = b_temp
         l.append(calc_l(X, y, b))
             #j+=1 
     return b, l
@@ -91,7 +94,7 @@ def predict_acc(X, y, b):
     return float(n_correct)/float(len(y))
 
 #Read in svm files one at a time. Return the X and y arrays that result
-inFiles = open('svm_temp.txt', 'r')
+inFiles = open('svm_files.txt', 'r')
 
 def read_file(f):
     f = f.rstrip()
@@ -100,25 +103,22 @@ def read_file(f):
     ones = np.ones((len(y),1))
     ones = scipy.sparse.csr_matrix(ones)
     X = scipy.sparse.hstack([X, ones])
-    b = np.random.rand(X.shape[1])
-
-    return X, y, b
-
-b_tot = np.array([])
-
-#Run stocastic descent for different step sizes. Plot likliehood, and accuracey of prediction
+    X = X.tocsr()
+    return X, y
+    
+#Initialize b and l vectors
+b = np.random.rand(3231963)
 l_tot = []
 
+#Run adagrad, looping over the files
 for f in inFiles:
-    X, y, b = read_file(f)
+    X, y = read_file(f)
     l = []
     b, l = run_descent(X, y, b, 0.0001, 0.01, l)
-    #b_tot = np.concatenate(b_tot, b)
-    l_tot = l_tot+l#np.concatenate(l_tot, l)
+    l_tot = l_tot+l
     
     X = None
     y = None
-    b = None
     l = None
     
 plt.figure()
@@ -126,7 +126,7 @@ plt.plot(l_tot)
 
 plt.ylabel('-log likliehood')
 plt.xlabel('Iteration')
-plt.savefig('result_qnewton.png', format = 'png')
+plt.savefig('result_sgd.png', format = 'png')
 
 #b_tot = b_tot/np.linalg.norm(b_tot, ord=1)
 #print "Step Size: "+str(step_size)
