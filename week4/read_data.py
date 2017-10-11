@@ -4,9 +4,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import sklearn as sk
 from sklearn import datasets
+from tempfile import TemporaryFile
 
 #Read in svm files one at a time. Save the X and y arrays that result
-inFiles = open('svm_temp.txt', 'r')
+inFiles = open('svm_files.txt', 'r')
+outFile = TemporaryFile()
 for f in inFiles:
     f = f.rstrip()
     print "Reading file: "+f
@@ -19,5 +21,11 @@ for f in inFiles:
     X_temp = None
     y_temp = None
 
-#scipy.sparse.save_npz('data_matrices', X, y)
-np.savez_compressed('data_temp', X=X, y=y)
+print X.shape
+ones = np.ones((len(y),1))
+ones = scipy.sparse.coo_matrix(ones)
+print ones.shape
+X = scipy.sparse.hstack([X, ones])
+
+np.savez_compressed('data_y', y=y)
+scipy.sparse.save_npz('data_X', X)
