@@ -41,7 +41,7 @@ for z in [0.5, 0.25, 0.1, 0.001]:
 plt.ylabel('MSE')
 plt.xlabel('lambda')
 plt.legend(loc='upper right')
-plt.savefig('result.png', format='png')
+plt.savefig('result_pen.png', format='png')
     
     
         
