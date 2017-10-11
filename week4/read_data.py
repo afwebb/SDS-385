@@ -7,8 +7,8 @@ from sklearn import datasets
 from tempfile import TemporaryFile
 
 #Read in svm files one at a time. Save the X and y arrays that result
-inFiles = open('svm_files.txt', 'r')
-outFile = TemporaryFile()
+inFiles = open('svm_temp.txt', 'r')
+
 for f in inFiles:
     f = f.rstrip()
     print "Reading file: "+f
@@ -23,9 +23,8 @@ for f in inFiles:
 
 print X.shape
 ones = np.ones((len(y),1))
-ones = scipy.sparse.coo_matrix(ones)
-print ones.shape
+ones = scipy.sparse.csr_matrix(ones)
 X = scipy.sparse.hstack([X, ones])
 
-np.savez_compressed('data_y', y=y)
-scipy.sparse.save_npz('data_X', X)
+np.savez_compressed('data_temp', X=X, y=y)
+#scipy.sparse.save_npz('data_X', X)
