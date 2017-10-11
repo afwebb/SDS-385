@@ -24,11 +24,12 @@ def calc_s(y, lamb):
 #Define vector length, and sigma vector
 n=1000
 sigma = np.random.random(n)
+y = np.random.random(n)
 plt.figure()
 
-for z in [0.5, 0.1, 0.001]:
+for z in [0.5, 0.25, 0.1, 0.001]:
     theta = np.random.choice([0, 1], size=(n), p=[1-z, z])
-    y = np.exp(-np.square(theta)/(2*np.square(sigma)))
+    norm = np.exp(-np.square(y-theta)/(2*np.square(sigma)))
     mse=[]
     vec_lambda=np.linspace(0,1.2,100)
     for lamb in vec_lambda:
