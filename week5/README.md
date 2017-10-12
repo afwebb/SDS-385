@@ -22,7 +22,7 @@ As lambda increases, more and more of the coefficients are zeroed out.
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week5/result_lasso_mse.png" width="500">
 
-The MSE decreases over time, indicating the data is sparse.
+The MSE decreases over time, indicating the data is sparse. The lasso does a way better job on the data it was trained on, compared to the test data, which isn't terribly surprising.
 
 
 
