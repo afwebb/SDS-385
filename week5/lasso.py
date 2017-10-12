@@ -35,13 +35,15 @@ X_train, y_train = X[:n_samples // 2], y[:n_samples // 2]
 X_test, y_test = X[n_samples // 2:], y[n_samples // 2:]
 
 plt.figure(1)
-mse=[]
+mse_test=[]
+mse_train=[]
 vec_lambda=np.linspace(0,9,100)
 for alpha in vec_lambda:
     lasso = Lasso(alpha=alpha)
     y_pred = lasso.fit(X_train, y_train).predict(X_test)
     #s = calc_s(y_pred, alpha)
-    mse.append(calc_mse(y_test,y_pred,X_test))
+    mse_test.append(calc_mse(y_test,y_pred,X_test))
+    mse_train.append(calc_mse(y_train,y_pred,X_train))
     if alpha%2==0 and alpha!=0:
         plt.plot(lasso.coef_, label="Lambda: "+str(alpha))
     
@@ -50,7 +52,9 @@ plt.legend(loc='upper right')
 plt.savefig('result_lasso_coef.png', format='png')
 
 plt.figure(2)
-plt.plot(vec_lambda, mse)
+plt.plot(vec_lambda, mse_train, label='Training Data')
+plt.plot(vec_lambda, mse_test, label='Test Data')
 plt.ylabel('MSE')
 plt.xlabel('lambda')
+plt.legend(loc='upper right')
 plt.savefig('result_lasso_mse.png', format='png')
