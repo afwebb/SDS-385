@@ -17,7 +17,7 @@ The result suggests that for a sparse vector, a higher lambda greatly improves t
 The code for this excercise can be found [here](lasso.py)
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week5/result_lasso_coef.png" width="500">
-
+<img src="https://github.com/afwebb/SDS-385/blob/master/week5/coef_lambda.png" width="500">
 As lambda increases, more and more of the coefficients are zeroed out. 
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week5/result_lasso_mse.png" width="500">
