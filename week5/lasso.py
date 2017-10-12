@@ -24,6 +24,7 @@ def calc_s(y, lamb):
 
 #Read in data
 X = pd.read_csv('diabetesX.csv')
+col_names=X.columns.values.tolist()
 y = pd.read_csv('diabetesY.csv')
 y = y.values
 X = X.values
@@ -38,15 +39,27 @@ plt.figure(1)
 mse_test=[]
 mse_train=[]
 vec_lambda=np.linspace(0,9,100)
+vec_coef=[]
 for alpha in vec_lambda:
     lasso = Lasso(alpha=alpha)
     y_pred = lasso.fit(X_train, y_train).predict(X_test)
-    #s = calc_s(y_pred, alpha)
     mse_test.append(calc_mse(y_test,y_pred,X_test))
     mse_train.append(calc_mse(y_train,y_pred,X_train))
+    vec_coef.append(lasso.coef_)
     if alpha%2==0 and alpha!=0:
         plt.plot(lasso.coef_, label="Lambda: "+str(alpha))
+
+plt.figure(3)
+vec_coef = np.asarray(vec_coef).T
+for i in xrange(10):#len(vec_coef[:,0])):
+    print i
+    plt.plot(vec_lambda[:50], vec_coef[i,:50], label=col_names[i])
+    plt.ylabel('Coefficient Value')
+    plt.xlabel('lambda')
+    plt.legend()
+    plt.savefig('coef_lambda.png',format='png')
     
+
 plt.ylabel('Lasso Coefficients')
 plt.legend(loc='upper right')
 plt.savefig('result_lasso_coef.png', format='png')
