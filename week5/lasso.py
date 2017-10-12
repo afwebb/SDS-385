@@ -49,17 +49,6 @@ for alpha in vec_lambda:
     if alpha%2==0 and alpha!=0:
         plt.plot(lasso.coef_, label="Lambda: "+str(alpha))
 
-plt.figure(3)
-vec_coef = np.asarray(vec_coef).T
-for i in xrange(10):#len(vec_coef[:,0])):
-    print i
-    plt.plot(vec_lambda[:50], vec_coef[i,:50], label=col_names[i])
-    plt.ylabel('Coefficient Value')
-    plt.xlabel('lambda')
-    plt.legend()
-    plt.savefig('coef_lambda.png',format='png')
-    
-
 plt.ylabel('Lasso Coefficients')
 plt.legend(loc='upper right')
 plt.savefig('result_lasso_coef.png', format='png')
@@ -71,3 +60,13 @@ plt.ylabel('MSE')
 plt.xlabel('lambda')
 plt.legend(loc='upper right')
 plt.savefig('result_lasso_mse.png', format='png')
+
+plt.figure(3)
+vec_coef = np.asarray(vec_coef).T
+for i in xrange(10):#len(vec_coef[:,0])):
+    print i
+    plt.plot(vec_lambda[:50], vec_coef[i,:50], label=col_names[i])
+    plt.ylabel('Coefficient Value')
+    plt.xlabel('lambda')
+    plt.legend()
+    plt.savefig('coef_lambda.png',format='png')
