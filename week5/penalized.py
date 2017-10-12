@@ -22,12 +22,13 @@ def calc_s(y, lamb):
     return s
 
 #Define vector length, and sigma vector
-n=1000
+n=10000
 sigma = np.random.random(n)
 y = np.random.random(n)
-plt.figure()
+plt.figure(1)
+plt.figure(2)
 
-for z in [0.5, 0.25, 0.1, 0.001]:
+for z in [0.9, 0.5, 0.25, 0.1, 0.001]:
     theta = np.random.choice([0, 1], size=(n), p=[1-z, z])
     norm = np.exp(-np.square(y-theta)/(2*np.square(sigma)))
     mse=[]
@@ -36,13 +37,26 @@ for z in [0.5, 0.25, 0.1, 0.001]:
         s = calc_s(y, lamb)
         mse.append(calc_mse(s, theta))
 
+    plt.figure(1)
     plt.plot(vec_lambda, mse, label='sparsity='+str(z))
+    plt.figure(2)
+    th = theta
+    #th[th==0]=np.nan
+    #s[th==0]=np.nan
+    th=th*sigma
+    plt.plot(th, s, label='sparsity='+str(z))
 
+plt.figure(1)
 plt.ylabel('MSE')
 plt.xlabel('lambda')
 plt.legend(loc='upper right')
 plt.savefig('result_pen.png', format='png')
-    
+
+plt.figure(2)
+plt.xlabel('theta')
+plt.ylabel('s')
+plt.legend(loc='upper right')
+plt.savefig('result_theta.png', format='png')
     
         
         

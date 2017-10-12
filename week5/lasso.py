@@ -4,14 +4,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import sklearn as sk
 from sklearn import datasets
-from sklearn import preprocessing
+from sklearn.linear_model import Lasso
 
 #Calculate mse of estimate
-def calc_mse(s, theta):
+def calc_mse(y_pred, y, X):
     mse = 0
-    for i,j in zip(theta,s[:,0]):
+    xy = np.dot(X.T, y)
+    for i,j in zip(y,xy):
         mse+=np.square(i-j)
-    mse=mse/len(theta)
+    mse=mse/len(y)
     return mse
 
 #calculate prediction vector
@@ -25,25 +26,31 @@ def calc_s(y, lamb):
 X = pd.read_csv('diabetesX.csv')
 y = pd.read_csv('diabetesY.csv')
 y = y.values
-#y = y.reshape(y.shape[0],1)
+X = X.values
 
 #Use the rest for X. Scale X by the size of the vector
-min_max_scaler = preprocessing.MinMaxScaler()
-X = min_max_scaler.fit_transform(X)
-X = np.insert(X, 10, 1, axis=1)
+X /= X.std(axis=0)
+n_samples = X.shape[0]
+X_train, y_train = X[:n_samples // 2], y[:n_samples // 2]
+X_test, y_test = X[n_samples // 2:], y[n_samples // 2:]
 
-for z in [0.5, 0.25, 0.1, 0.001]:
-    theta = np.random.choice([0, 1], size=len(y), p=[1-z, z])
-    #norm = np.exp(-np.square(y-theta))
-    mse=[]
-    vec_lambda=np.linspace(0,1.2,100)
-    for lamb in vec_lambda:
-        s = calc_s(y, lamb)
-        mse.append(calc_mse(s, theta))
+plt.figure(1)
+mse=[]
+vec_lambda=np.linspace(0,9,100)
+for alpha in vec_lambda:
+    lasso = Lasso(alpha=alpha)
+    y_pred = lasso.fit(X_train, y_train).predict(X_test)
+    #s = calc_s(y_pred, alpha)
+    mse.append(calc_mse(y_test,y_pred,X_test))
+    if alpha%2==0 and alpha!=0:
+        plt.plot(lasso.coef_, label="Lambda: "+str(alpha))
+    
+plt.ylabel('Lasso Coefficients')
+plt.legend(loc='upper right')
+plt.savefig('result_lasso_coef.png', format='png')
 
-    plt.plot(vec_lambda, mse, label='sparsity='+str(z))
-
+plt.figure(2)
+plt.plot(vec_lambda, mse)
 plt.ylabel('MSE')
 plt.xlabel('lambda')
-plt.legend(loc='upper right')
-plt.savefig('result_lasso.png', format='png')
+plt.savefig('result_lasso_mse.png', format='png')

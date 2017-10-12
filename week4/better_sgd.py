@@ -29,8 +29,8 @@ def calc_l(X, y, b):
 #Check the convergance of the log likliehood function within some criteria, e. Return true if so
 def test_converge(l, e):
     if len(l)>5: 
-        conv = (l[len(l)-1]-l[len(l)-2])/l[len(l)-1]
-        #print conv
+        conv = (l[len(l)-1]-l[len(l)-2])#/l[len(l)-1]
+        print conv
         if abs(conv) < e:
             return True
         else:
@@ -47,7 +47,7 @@ def shuffle(X, y):
 def run_descent(X, y, b, e, step_size, l):
     batch_size = 1000
     hist_grad=0
-    #while not test_converge(l, e):
+    conv = False
     for i in xrange(len(y)/batch_size):
         if (i+1)*batch_size < len(y):
             X_temp = X[i*batch_size:(i+1)*batch_size]
@@ -58,7 +58,7 @@ def run_descent(X, y, b, e, step_size, l):
             y_temp = y[i*batch_size:]
             #b_temp = b[i*batch_size:]
 
-        #for j in xrange(10):
+            #for j in xrange(10):
             #for i,k in zip(X_bat.col, X_bat.data):
             #j = i%len(y)
             #if j==0:
@@ -69,8 +69,11 @@ def run_descent(X, y, b, e, step_size, l):
         b -= grad_b*step_size*(1/np.sqrt(hist_grad + e))
         #b[i*batch_size:(i+1)*batch_size] = b_temp
         l.append(calc_l(X, y, b))
-            #j+=1 
-    return b, l
+        #j+=1 
+        conv = test_converge(l, e)
+        if conv:
+            break
+    return b, l, conv
 
 #Test if the b found correctly predicts B or M, given X, y and calculated b. Return fraction of success
 def predict_acc(X, y, b):
@@ -114,7 +117,10 @@ l_tot = []
 for f in inFiles:
     X, y = read_file(f)
     l = []
-    b, l = run_descent(X, y, b, 0.0001, 0.01, l)
+    b, l, conv = run_descent(X, y, b, 0.05, 0.01, l)
+    print conv
+    if conv:
+        break
     l_tot = l_tot+l
     
     X = None
@@ -126,7 +132,7 @@ plt.plot(l_tot)
 
 plt.ylabel('-log likliehood')
 plt.xlabel('Iteration')
-plt.savefig('result_sgd.png', format = 'png')
+plt.savefig('result_better_sgd.png', format = 'png')
 
 #b_tot = b_tot/np.linalg.norm(b_tot, ord=1)
 #print "Step Size: "+str(step_size)
