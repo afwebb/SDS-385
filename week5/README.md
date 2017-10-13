@@ -2,9 +2,14 @@
 
 ## Penalized Likliehood
 
+The code for this excercise can be found [here](penalized.py)
+
 A.) 
 
-B.) The code for this excercise can be found [here](penalized.py)
+<img src="https://github.com/afwebb/SDS-385/blob/master/week5/theta_s.png" width="500">
+<img src="https://github.com/afwebb/SDS-385/blob/master/week5/theta_y.png" width="500">
+
+B.) 
 
 A random y and sparse theta are generated. An S vector is calculated based on the vector. The resulting mean square error as a function of lambda is shown below, for several different levels of sparsity:
 
