@@ -1,13 +1,20 @@
 # Week 5 Exercises
 
+Summary of results for exercises 5
+
 ## Penalized Likliehood
 
 The code for this excercise can be found [here](penalized.py)
 
 A.) 
 
+The following plots show equation 1 and S plotting for various values of lambda and y: 
+
 <img src="https://github.com/afwebb/SDS-385/blob/master/week5/theta_s.png" width="500">
+
 <img src="https://github.com/afwebb/SDS-385/blob/master/week5/theta_y.png" width="500">
+
+The second plot in particular demonstrates how this function serves as a soft threshold, zeroing out more and more coefficients as lambda increases.
 
 B.) 
 
@@ -21,13 +28,19 @@ The result suggests that for a sparse vector, a higher lambda greatly improves t
 
 The code for this excercise can be found [here](lasso.py)
 
+A.)
+
 <img src="https://github.com/afwebb/SDS-385/blob/master/week5/result_lasso_coef.png" width="500">
 <img src="https://github.com/afwebb/SDS-385/blob/master/week5/coef_lambda.png" width="500">
-As lambda increases, more and more of the coefficients are zeroed out. 
+As expected, as lambda increases, more and more of the coefficients are zeroed out. The value of the coefficiencts decrease as well.
+
+B-C.)
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week5/result_lasso_mse.png" width="500">
 
-The MSE decreases over time, indicating the data is sparse. The lasso does a way better job on the data it was trained on, compared to the test data, which isn't terribly surprising.
+The MSE decreases over time, indicating the data is sparse. The lasso does a way better job on the data it was trained on, compared to the test data, which isn't terribly surprising. 
+
+Adding the Cp term gives a halfway point between the two, suggesting the need for a slightly higher lambda than the training data would suggest, but lower than the test data suggests. 
 
 
 
