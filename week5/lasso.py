@@ -22,6 +22,16 @@ def calc_s(y, lamb):
     s = np.sign(y)*s
     return s
 
+#Calculate the cp statistic
+def calc_cp(y_pred, y, X):
+    mse = calc_mse(y_pred, y, X) 
+    sl = len([x for x in y_pred if x > 0])
+    sigma = mse
+    if len(y)!=sl:
+        sigma = mse/(len(y)-sl)
+    cp = mse + 2*sl*sigma/len(y)
+    return cp
+
 #Read in data
 X = pd.read_csv('diabetesX.csv')
 col_names=X.columns.values.tolist()
@@ -38,6 +48,7 @@ X_test, y_test = X[n_samples // 2:], y[n_samples // 2:]
 plt.figure(1)
 mse_test=[]
 mse_train=[]
+mse_cp=[]
 vec_lambda=np.linspace(0,9,100)
 vec_coef=[]
 for alpha in vec_lambda:
@@ -45,6 +56,7 @@ for alpha in vec_lambda:
     y_pred = lasso.fit(X_train, y_train).predict(X_test)
     mse_test.append(calc_mse(y_test,y_pred,X_test))
     mse_train.append(calc_mse(y_train,y_pred,X_train))
+    mse_cp.append(calc_cp(y_train,y_pred,X_train))
     vec_coef.append(lasso.coef_)
     if alpha%2==0 and alpha!=0:
         plt.plot(lasso.coef_, label="Lambda: "+str(alpha))
@@ -56,6 +68,7 @@ plt.savefig('result_lasso_coef.png', format='png')
 plt.figure(2)
 plt.plot(vec_lambda, mse_train, label='Training Data')
 plt.plot(vec_lambda, mse_test, label='Test Data')
+plt.plot(vec_lambda, mse_cp, label='Cp')
 plt.ylabel('MSE')
 plt.xlabel('lambda')
 plt.legend(loc='upper right')
