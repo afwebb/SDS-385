@@ -34,7 +34,6 @@ A.)
 <img src="https://github.com/afwebb/SDS-385/blob/master/week5/coef_lambda.png" width="500">
 As expected, as lambda increases, more and more of the coefficients are zeroed out. The value of the coefficiencts decrease as well.
 
-
 B-C.)
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week5/result_lasso_mse.png" width="500">
