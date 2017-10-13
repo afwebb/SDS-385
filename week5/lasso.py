@@ -45,6 +45,7 @@ n_samples = X.shape[0]
 X_train, y_train = X[:n_samples // 2], y[:n_samples // 2]
 X_test, y_test = X[n_samples // 2:], y[n_samples // 2:]
 
+#Calculate mse for test data, train data, and Cp estimate. Calc coefficients for all lambda
 plt.figure(1)
 mse_test=[]
 mse_train=[]
@@ -61,10 +62,12 @@ for alpha in vec_lambda:
     if alpha%2==0 and alpha!=0:
         plt.plot(lasso.coef_, label="Lambda: "+str(alpha))
 
+#Plot coefficients values for various lambdas
 plt.ylabel('Lasso Coefficients')
 plt.legend(loc='upper right')
 plt.savefig('result_lasso_coef.png', format='png')
 
+#Plot mse
 plt.figure(2)
 plt.plot(vec_lambda, mse_train, label='Training Data')
 plt.plot(vec_lambda, mse_test, label='Test Data')
@@ -74,6 +77,7 @@ plt.xlabel('lambda')
 plt.legend(loc='upper right')
 plt.savefig('result_lasso_mse.png', format='png')
 
+#Plot coefficient values as a functino of lambda
 plt.figure(3)
 vec_coef = np.asarray(vec_coef).T
 for i in xrange(10):#len(vec_coef[:,0])):

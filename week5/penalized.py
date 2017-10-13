@@ -36,12 +36,14 @@ for lam in [0, 2, 4, 6, 8]:
     plt.figure(4)
     plt.plot(y_vec, s_vec, label='lambda='+str(lam))
 
+#Plot Sy that results for a given theta
 plt.figure(3)
 plt.ylabel('S(y)')
 plt.xlabel('theta')
 plt.legend(loc='upper right')
 plt.savefig('theta_s.png', format='png')
 
+#Plot Sy for a given y
 plt.figure(4)
 plt.ylabel('S(y)')
 plt.xlabel('y')
@@ -66,6 +68,7 @@ for z in [0.9, 0.5, 0.25, 0.1, 0.001]:
 
     plt.plot(vec_lambda, mse, label='sparsity='+str(z))
 
+#Plot MSE as a function of lambda
 plt.ylabel('MSE')
 plt.xlabel('lambda')
 plt.legend(loc='upper right')
@@ -73,7 +76,7 @@ plt.savefig('result_pen.png', format='png')
 
 #Plot S(y) as a function of input theta
 plt.figure(2)
-for lam in [0, 4, 8]:
+for lam in [0, 0.2, 0.4, 0.8]:
     #Define theta vector, calculate s(y)
     th = scipy.sparse.random(n, 1, density=0.001)#np.random.choice([0, 1], size=(n), p=[1-0.001, 0.001])
     th = th.A
@@ -81,14 +84,12 @@ for lam in [0, 4, 8]:
 
     # Calculate the point density
     #xy = np.vstack([th,s])
-    z = scipy.stats.gaussian_kde(th+s)(th+s)
-
+    print 'here'
+    z = scipy.stats.gaussian_kde(s)(s)
+    print 'here again'
     plt.scatter(th, s, label='lambda='+str(lam), c=z, s=100, edgecolor='')
 
 plt.xlabel('theta')
 plt.ylabel('s')
 plt.legend(loc='upper right')
 plt.savefig('result_theta.png', format='png')
-    
-        
-        
