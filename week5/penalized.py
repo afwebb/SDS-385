@@ -61,7 +61,7 @@ for z in [0.9, 0.5, 0.25, 0.1, 0.001]:
     theta=theta.A
     norm = np.exp(-np.square(y-theta)/(2*np.square(sigma)))
     mse=[]
-    vec_lambda=np.linspace(0,1.5,100)
+    vec_lambda=np.linspace(0,1.2,100)
     for lamb in vec_lambda:
         s = calc_s(y, lamb)
         mse.append(calc_mse(s, theta))
@@ -83,10 +83,7 @@ for lam in [0, 0.2, 0.4, 0.8]:
     s = calc_s(y, lam)
 
     # Calculate the point density
-    #xy = np.vstack([th,s])
-    print 'here'
     z = scipy.stats.gaussian_kde(s)(s)
-    print 'here again'
     plt.scatter(th, s, label='lambda='+str(lam), c=z, s=100, edgecolor='')
 
 plt.xlabel('theta')
