@@ -117,7 +117,7 @@ l_tot = []
 for f in inFiles:
     X, y = read_file(f)
     l = []
-    b, l, conv = run_descent(X, y, b, 0.05, 0.01, l)
+    b, l, conv = run_descent(X, y, b, 0.001, 0.01, l)
     print conv
     if conv:
         break
