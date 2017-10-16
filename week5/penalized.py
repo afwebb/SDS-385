@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import sklearn as sk
 from sklearn import datasets
 from sklearn import preprocessing
+import itertools
 
 #Calculate mse of estimate
 def calc_mse(s, theta):
@@ -76,15 +77,16 @@ plt.savefig('result_pen.png', format='png')
 
 #Plot S(y) as a function of input theta
 plt.figure(2)
+colors = itertools.cycle(["r", "b", "g", "y"])
 for lam in [0, 0.2, 0.4, 0.8]:
     #Define theta vector, calculate s(y)
-    th = scipy.sparse.random(n, 1, density=0.001)#np.random.choice([0, 1], size=(n), p=[1-0.001, 0.001])
+    th = scipy.sparse.random(n, 1, density=0.25)#np.random.choice([0, 1], size=(n), p=[1-0.001, 0.001])
     th = th.A
     s = calc_s(y, lam)
 
     # Calculate the point density
-    z = scipy.stats.gaussian_kde(s)(s)
-    plt.scatter(th, s, label='lambda='+str(lam), c=z, s=100, edgecolor='')
+    #z = scipy.stats.gaussian_kde(s)(s)
+    plt.scatter(th, s, label='lambda='+str(lam), color=next(colors))
 
 plt.xlabel('theta')
 plt.ylabel('s')
