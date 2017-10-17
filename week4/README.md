@@ -22,7 +22,9 @@ while not test_converge(l, e):
         l.append(calc_l(X, y, b)) #track l
 ```
 
-I read in 5000 entries at a time, and decreased the step size by hand over time (my attempts at variable step size haven't panned out). This batch gradient descent approach converged much quicker than using only 1 entry at a time, and certainly quicker than full gradient descent.
+I read in 5000 entries at a time, and decreased the step size by hand over time (my attempts at variable step size haven't panned out). This allowed me to start with a larger step size while still demanding a strict convergence criterion.
+
+This batch gradient descent approach converged much quicker than using only 1 entry at a time, and certainly quicker than full gradient descent.
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week4/result_sgd.png" width="500">
 
