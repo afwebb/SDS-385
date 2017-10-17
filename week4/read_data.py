@@ -7,7 +7,7 @@ from sklearn import datasets
 from tempfile import TemporaryFile
 
 #Read in svm files one at a time. Save the X and y arrays that result
-inFiles = open('svm_temp.txt', 'r')
+inFiles = open('svm_files.txt', 'r')
 
 for f in inFiles:
     f = f.rstrip()
@@ -25,6 +25,8 @@ print X.shape
 ones = np.ones((len(y),1))
 ones = scipy.sparse.csr_matrix(ones)
 X = scipy.sparse.hstack([X, ones])
+X,y = sk.utils.shuffle(X,y)
 
-np.savez_compressed('data_temp', X=X, y=y)
+sk.datasets.dump_svmlight_file(X, y, 'data')
+#np.savez_compressed('data_temp', y=y)
 #scipy.sparse.save_npz('data_X', X)
