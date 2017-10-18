@@ -32,6 +32,6 @@ This batch gradient descent approach converged much quicker than using only 1 en
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week4/result_sgd.png" width="500">
 
-Convergence is achieved after 38 seconds. 
+Convergence is achieved after 25 seconds. 
 
 Accuracey of the resulting beta is tested on a subset of the data (10,000,000 entries). The accuracey of the prediction is found to be 98%
