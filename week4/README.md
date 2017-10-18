@@ -24,6 +24,8 @@ while not test_converge(l, e):
 
 I read in 5000 entries at a time, and decreased the step size by hand over time (my attempts at variable step size haven't panned out). This allowed me to start with a larger step size while still demanding a strict convergence criterion.
 
+A penalty term of 0.1 is applied to the gradient, as well as the likliehood function.
+
 This batch gradient descent approach converged much quicker than using only 1 entry at a time, and certainly quicker than full gradient descent.
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week4/result_sgd.png" width="500">
