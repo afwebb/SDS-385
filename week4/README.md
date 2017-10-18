@@ -22,7 +22,9 @@ while not test_converge(l, e):
         l.append(calc_l(X, y, b)) #track l
 ```
 
-I read in 5000 entries at a time, and decreased the step size by hand over time (my attempts at variable step size haven't panned out). This allowed me to start with a larger step size while still demanding a strict convergence criterion.
+Choosing the right batch size is tricky: Too big, and it'll take to long to read in and calculate the gradient, too small and the number of iterations required to converge increases. I tried a few different batch sizes, and using 100 entries at a time completed most quickly. I've been thinking about how to choose an optimal batch size in an intelligent way, without having to perform the complete adagrad. Maybe optimize a ratio between the time it takes to run each iteration, and how much each iteration changes the likliehood.
+
+I also decreased the step size by hand over time (my attempts at variable step size haven't panned out). This allowed me to start with a larger step size while still demanding a strict convergence criterion.
 
 A penalty term of 0.1 is applied to the gradient, as well as the likliehood function.
 
