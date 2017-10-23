@@ -39,10 +39,9 @@ B-C.)
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week5/result_lasso_mse.png" width="500">
 
-The MSE decreases over time, indicating the data is sparse. The lasso does a way better job on the data it was trained on, compared to the test data, which isn't terribly surprising. 
+The lasso fit performs as expected over testing and training data. Splitting the data set into 5 or 10 parts didn't have a major impact over the ideal value of lambda, but did change the mse value more significantly on other parts of the curve.
 
-Adding the Cp term gives a halfway point between the two, suggesting the need for a slightly higher lambda than the training data would suggest, but lower than the test data suggests. 
-
+The Mallow's Cp term yields results very similar to cross-validation, suggesting it can be used as an adequate alternative to cross validation.
 
 
 
