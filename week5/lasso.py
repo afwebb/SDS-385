@@ -4,13 +4,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import sklearn as sk
 from sklearn import datasets
-from sklearn.linear_model import Lasso
+from sklearn.linear_model import Lasso, lasso_path
 
 #Calculate mse of estimate
-def calc_mse(y_pred, y, X):
+def calc_mse(y_pred, y):
     mse = 0
-    xy = np.dot(X.T, y)
-    for i,j in zip(y,xy):
+    for i,j in zip(y,y_pred):
         mse+=np.square(i-j)
     mse=mse/len(y)
     return mse
@@ -23,41 +22,66 @@ def calc_s(y, lamb):
     return s
 
 #Calculate the cp statistic
-def calc_cp(y_pred, y, X):
-    mse = calc_mse(y_pred, y, X) 
-    sl = len([x for x in y_pred if x > 0])
-    sigma = mse
-    if len(y)!=sl:
-        sigma = mse/(len(y)-sl)
-    cp = mse + 2*sl*sigma/len(y)
+def calc_cp(y_pred, y, coef):
+    cp = calc_mse(y_pred, y) 
+    sl = np.count_nonzero(coef)
+    cp += 2*sl*cp/(len(y)-sl)
     return cp
+
+#Peform cross validation, splitting the sample into n parts. Return mse
+def cross_val(X, y, alpha, n):
+    X_split = np.array_split(X, n)
+    y_split = np.array_split(y, n)
+    err = 0
+    lasso = Lasso(alpha=alpha)
+
+    for i in xrange(n):
+        X_train = np.concatenate(X_split[:i] + X_split[(i+1):])
+        y_train = np.concatenate(y_split[:i] + y_split[(i+1):])
+        X_test, y_test = X_split[i], y_split[i]
+        lasso.fit(X_train, y_train)
+        y_pred = lasso.predict(X_test)
+        err+=sk.metrics.mean_squared_error(y_pred, y_test)
+        
+    return err/n
+
 
 #Read in data
 X = pd.read_csv('diabetesX.csv')
 col_names=X.columns.values.tolist()
-y = pd.read_csv('diabetesY.csv')
+y = pd.read_csv('diabetesY.csv', header=None)
 y = y.values
 X = X.values
-
-#Use the rest for X. Scale X by the size of the vector
+X,y = sk.utils.shuffle(X,y)
 X /= X.std(axis=0)
 n_samples = X.shape[0]
-X_train, y_train = X[:n_samples // 2], y[:n_samples // 2]
-X_test, y_test = X[n_samples // 2:], y[n_samples // 2:]
 
 #Calculate mse for test data, train data, and Cp estimate. Calc coefficients for all lambda
 plt.figure(1)
-mse_test=[]
 mse_train=[]
+mse_test_5=[]
+mse_test_10=[]
 mse_cp=[]
-vec_lambda=np.linspace(0,9,100)
+vec_lambda=np.linspace(0,19,200)
+vec_lambda=vec_lambda[1:]
 vec_coef=[]
+
+#Iterate over values of lambda
 for alpha in vec_lambda:
+    #Perform the lasso fit over whole sample
     lasso = Lasso(alpha=alpha)
-    y_pred = lasso.fit(X_train, y_train).predict(X_test)
-    mse_test.append(calc_mse(y_test,y_pred,X_test))
-    mse_train.append(calc_mse(y_train,y_pred,X_train))
-    mse_cp.append(calc_cp(y_train,y_pred,X_train))
+    lasso.fit(X, y)
+    y_pred = lasso.predict(X)
+    mse_train.append(calc_mse(y, y_pred))
+
+    #Perform lasso fit using cross-validation
+    mse_test_5.append(cross_val(X, y, alpha, 5))
+    mse_test_10.append(cross_val(X, y, alpha, 10))
+
+    #Calc mallow's cp
+    mse_cp.append(calc_cp(y,y_pred, lasso.coef_))
+
+    #Plot coefficients
     vec_coef.append(lasso.coef_)
     if alpha%2==0 and alpha!=0:
         plt.plot(lasso.coef_, label="Lambda: "+str(alpha))
@@ -65,16 +89,17 @@ for alpha in vec_lambda:
 #Plot coefficients values for various lambdas
 plt.ylabel('Lasso Coefficients')
 plt.legend(loc='upper right')
-plt.savefig('result_lasso_coef.png', format='png')
+plt.savefig('result_lasso_coef_test.png', format='png')
 
 #Plot mse
 plt.figure(2)
-plt.plot(vec_lambda, mse_train, label='Training Data')
-plt.plot(vec_lambda, mse_test, label='Test Data')
-plt.plot(vec_lambda, mse_cp, label='Cp')
+plt.plot(np.log10(vec_lambda), mse_train, label='Training Data')
+plt.plot(np.log10(vec_lambda), mse_test_5, label='Test Data 5')
+plt.plot(np.log10(vec_lambda), mse_test_10, label='Test Data 10')
+plt.plot(np.log10(vec_lambda), mse_cp, label='Cp')
 plt.ylabel('MSE')
-plt.xlabel('lambda')
-plt.legend(loc='upper right')
+plt.xlabel('log(lambda)')
+plt.legend(loc='upper left')
 plt.savefig('result_lasso_mse.png', format='png')
 
 #Plot coefficient values as a functino of lambda
@@ -86,4 +111,4 @@ for i in xrange(10):#len(vec_coef[:,0])):
     plt.ylabel('Coefficient Value')
     plt.xlabel('lambda')
     plt.legend()
-    plt.savefig('coef_lambda.png',format='png')
+    plt.savefig('coef_lambda_test.png',format='png')

@@ -24,6 +24,55 @@ def calc_l(X, y, b):
     l = -(np.dot(y.T, np.log(w + 1e-7)) + np.dot((1 - y).T, np.log(1-w + 1e-7)))/X.shape[0] +  lam * np.linalg.norm(b, 1) #include penalty term on the loss function
     return l
 
+def calc_batch_size(b):
+
+    calc_times = []
+    l_change_vec = []
+    i = 10
+    batch_values = []
+    batch_max = 0
+
+    while i < 10000:
+        start = time()
+        X,y= read_file('data', 0, i)
+        l1 = calc_l(X,y,b)
+        b -= 0.1*calc_gradient(X, y, b)
+        l2 = calc_l(X,y,b)
+        end = time()
+
+        grad_time = end-start
+        l_change = l1-l2
+        calc_times.append(grad_time)
+        l_change_vec.append(l_change)
+        batch_values.append(i)
+        
+
+        if l_change/grad_time > batch_max:
+            batch_max = abs(l_change/grad_time)
+
+        i=i*1.5
+
+    plt.figure(2)
+    plt.semilogx(batch_values, calc_times)
+    plt.ylabel('Calculation Time')
+    plt.xlabel('log Batch Size')
+    plt.savefig('time_vs_batch.png', format = 'png')
+
+    plt.figure(3)
+    plt.semilogx(batch_values, l_change_vec)
+    plt.ylabel('Change in l')
+    plt.xlabel('Batch Size')
+    plt.savefig('changeL_vs_batch.png', format = 'png')
+
+    r = np.array(calc_times)/np.array(l_change_vec)
+    plt.figure(4)
+    plt.semilogx(batch_values, r)
+    plt.ylabel('Change in l / Calculation Time')
+    plt.xlabel('Batch Size')
+    plt.savefig('ratio_vs_batch.png', format = 'png')
+
+    return batch_max
+
 #Check the convergance of the log likliehood function within some criteria, e. Return true converged
 def test_converge(l, e):
     if len(l)>5: 
@@ -37,9 +86,8 @@ def test_converge(l, e):
         return 0 
 
 #Perform stocastic gradient descent on b. Give the likliehood at each step.
-def run_descent(X, y, b, e, step_size, l):
+def run_descent(X, y, b, e, step_size, batch_size, l):
 
-    batch_size = 5000 #Number of entries for batch
     hist_grad=0 #track gradient
     i = 0 #track iteration count
 
@@ -88,9 +136,14 @@ b = np.random.rand(3231963)
 X = []
 y = []
 l=[]
+
+#Determine optimal batch size
+batch_size = 500#calc_batch_size(b)
+print batch_size
+
 #Run adagrad, looping over the files
 start = time()
-b, l = run_descent(X, y, b, 0.0001, 0.1, l)
+b, l = run_descent(X, y, b, 0.0001, 0.1, batch_size, l)
 end = time()
 
 print "Time to complete: "+str(end-start)
