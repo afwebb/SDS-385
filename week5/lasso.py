@@ -93,9 +93,9 @@ plt.savefig('result_lasso_coef_test.png', format='png')
 
 #Plot mse
 plt.figure(2)
-plt.plot(np.log10(vec_lambda), mse_train, label='Training Data')
-plt.plot(np.log10(vec_lambda), mse_test_5, label='Test Data 5')
-plt.plot(np.log10(vec_lambda), mse_test_10, label='Test Data 10')
+plt.plot(np.log10(vec_lambda), mse_train, label='In sample')
+plt.plot(np.log10(vec_lambda), mse_test_5, label='5 fold CV')
+plt.plot(np.log10(vec_lambda), mse_test_10, label='10 fold CV')
 plt.plot(np.log10(vec_lambda), mse_cp, label='Cp')
 plt.ylabel('MSE')
 plt.xlabel('log(lambda)')
@@ -105,10 +105,8 @@ plt.savefig('result_lasso_mse.png', format='png')
 #Plot coefficient values as a functino of lambda
 plt.figure(3)
 vec_coef = np.asarray(vec_coef).T
-for i in xrange(10):#len(vec_coef[:,0])):
-    print i
-    plt.plot(vec_lambda[:50], vec_coef[i,:50], label=col_names[i])
+for i in xrange(len(vec_coef[:,0])):
+    plt.plot(np.log10(vec_lambda), vec_coef[i,:])#, label=col_names[i])
     plt.ylabel('Coefficient Value')
-    plt.xlabel('lambda')
-    plt.legend()
-    plt.savefig('coef_lambda_test.png',format='png')
+    plt.xlabel('log lambda')
+    plt.savefig('coef_lambda.png',format='png')
