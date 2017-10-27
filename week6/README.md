@@ -16,4 +16,4 @@ The two show similar behavior.
 
 <img src="likeliehood.png" width="600"/>  
 
-This plot shows that
+This plot shows the algorithm converging far more quickly when momentum is added.
