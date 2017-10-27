@@ -2,6 +2,10 @@
 
 ## The Proximal Operator
 
+<img src="page1.jpg" width="600"/> 
+<img src="page2.jpg" width="600"/> 
+<img src="page3.jpg" width="600"/> 
+
 ## Proximal Gradient Descent
 
 The code for this part can be found [here](proximal.py)
