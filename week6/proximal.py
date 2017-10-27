@@ -62,10 +62,9 @@ def run_prox(X, y, alpha):
     b = np.random.rand(X.shape[1])
     err = []
     while not test_converge(err, 10e-6):
-        print calc_mse(np.dot(X, b), y[:,0])
         u = b + 0.1*np.dot(X.T, y[:,0]-np.dot(X,b))/(2*y.shape[0])
         b = calc_prox(u, alpha)
-        err.append(calc_mse(np.dot(X, b), y[:,0]))
+        err.append(calc_mse(np.dot(X, b), y[:,0])+alpha*sum(abs(b)))
     return b, err
 
 #Run proximal descent with momentum
@@ -73,15 +72,18 @@ def run_mom(X, y, alpha):
     b = None
     b = np.random.rand(X.shape[1])
     err = []
-    s = []
-    s.append(0.)
-    b_vec = [b.copy(),b.copy()]
+    s = [1,]
+    b_vec = [b.copy(),]
+    z = b.copy()
+
     while not test_converge(err, 10e-6):
-        s.append((1+np.sqrt(1+4*s[-1]**2))/2)
-        z = b_vec[-1] + (s[-1]-1)/s[-2]*(b_vec[-1]-b_vec[-2])
+        print calc_mse(np.dot(X, b), y[:,0])
         u = z + 0.1*np.dot(X.T, y[:,0]-np.dot(X,z))/(2*y.shape[0])
         b = calc_prox(u, alpha)
-        err.append(calc_mse(np.dot(X, b), y[:,0]))
+        b_vec.append(b)
+        s.append((1+np.sqrt(1+4*s[-1]**2))/2)
+        z = b_vec[-1] + ((s[-1]-1)/s[-2])*(b_vec[-1]-b_vec[-2])
+        err.append(calc_mse(np.dot(X, b), y[:,0])+alpha*sum(abs(b)))
     return b, err
 
 #Read in data
@@ -180,3 +182,14 @@ for i in xrange(vec_coef_mom.shape[0]):
     plt.savefig('coef_mom.png',format='png')
 
 #Plot the loss for the optimal lambda
+#Get min lambda, run descent, plot likliehood
+b_prox, err_prox = run_prox(X, y, 0.1)
+b_mom, err_mom = run_mom(X, y, 0.1)
+
+plt.figure(6)
+plt.plot(err_prox, label='Proximal')
+plt.plot(err_mom, label='With Momentum')
+plt.ylabel('L')
+plt.xlabel('iteration')
+plt.legend(loc='upper right')
+plt.savefig('likeliehood.png',format='png')
