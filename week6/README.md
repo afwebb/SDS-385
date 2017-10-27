@@ -1,5 +1,19 @@
+# Week 6 Exercises
 
+## The Proximal Operator
 
-<img src="coef_prox.png" width="450"/> <img src="coef_lasso.png" width="450"/> 
+## Proximal Gradient Descent
+
+The code for this part can be found [here](proximal.py)
+
+The coefficients that result using proximal gradient are shown on the left, and the result of using scikit-learns built in lasso is shown on the right:
+
+<img src="coef_prox.png" width="425"/> <img src="coef_lasso.png" width="425"/> 
+
+The two show similar behavior.
+
+## Momentum
 
 <img src="likeliehood.png" width="600"/>  
+
+This plot shows that
