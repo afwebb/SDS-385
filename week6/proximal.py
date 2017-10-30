@@ -62,7 +62,7 @@ def run_prox(X, y, alpha):
     b = np.random.rand(X.shape[1])
     err = []
     while not test_converge(err, 10e-6):
-        u = b + 0.1*np.dot(X.T, y[:,0]-np.dot(X,b))/(2*y.shape[0])
+        u = b + 0.1*np.dot(X.T, y[:,0]-np.dot(X,b))/(2*y.shape[0]) + alpha * (b > 0).astype(float) - alpha * (b < 0).astype(float)
         b = calc_prox(u, alpha)
         err.append(calc_mse(np.dot(X, b), y[:,0])+alpha*sum(abs(b)))
     return b, err
@@ -82,7 +82,7 @@ def run_mom(X, y, alpha):
         b = calc_prox(u, alpha)
         b_vec.append(b)
         s.append((1+np.sqrt(1+4*s[-1]**2))/2)
-        z = b_vec[-1] + ((s[-1]-1)/s[-2])*(b_vec[-1]-b_vec[-2])
+        z = b_vec[-1] + ((s[-1]-1)/s[-2])*(b_vec[-1]-b_vec[-2]) + alpha * (b > 0).astype(float) - alpha * (b < 0).astype(float)
         err.append(calc_mse(np.dot(X, b), y[:,0])+alpha*sum(abs(b)))
     return b, err
 
