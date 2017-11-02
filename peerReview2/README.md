@@ -2,7 +2,7 @@
 
 WIP
 
-I couldn't find your solution for exercises 4 on your github.
+I couldn't find your solution for exercises 4 or the second half of exercises 5 on your github. I just went ahead and reviewed the first part of exercise 5.
 
 ## Exercises 5
 
@@ -79,6 +79,4 @@ This plot also doesn't seem right to me. The MSE is always increasing at every l
 
 ```python 
 scipy.sparse.random(n, 1, density=0.25)
-```
 
-I can't find any of your solutions for the lasso.
