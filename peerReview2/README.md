@@ -73,4 +73,12 @@ plt.show()
 
 #### Part B
 
-Most of my suggestions on part A I would say apply here as well. In particular, your MSE plot would use a legend showing the sparsity of each line. Just looking at it, I can't tell what the different is between the various colored lines.
+Most of my suggestions on part A I would say apply here as well. In particular, your MSE plot would use a legend showing the sparsity of each line. Just looking at it, I can't tell what the different is between the various colored lines. 
+
+This plot also doesn't seem right to me. The MSE is always increasing at every level of sparsity. For sparse datasets, the MSE should decrease with increasing lambda. I think this may be a problem with the way you're defining your sparse vector. It seems like it ought to work just looking at it, but I found an easy way to define a vector with varying levels of sparsity in scipy you could use instead to compare:
+
+```python 
+scipy.sparse.random(n, 1, density=0.25)
+```
+
+I can't find any of your solutions for the lasso.
