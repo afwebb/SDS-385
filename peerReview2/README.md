@@ -40,4 +40,37 @@ def gradient_regu(x,y,w,G,lamb)
 
 ### IPYNB Notebook
 
+#### Part A
 
+Your plots of the hard and soft functions do a good job of demonstrating the general behavior, but I think they could be improved in a couple ways. For one, I'm not sure there's a good reason to use a scatter plot. A line plot would show the same thing without the gaps between points. Extending the x-axis to include negative makes more sense to me as well, to get across how the function is symmetric.
+
+I also think you could plot functions for several different values of lambda on the same plot, so the general behavior can be seen all at once, rather than having to scroll through a half-dozen plots. I think taking plt.show() out of the for loop would do this. It would also be good if you included a label for each lambda value, as well as labels for your x and y axes. 
+
+Here's how I would do it:
+
+```python
+for i in lam:
+    Sy = th_hat_soft(y,i)
+    Hy = th_hat_hard(y,i)
+    
+    plt.figure(1) #This seperates the two plots
+    plt.plot(y, Sy, label="Lambda: "+str(lam))
+
+    plt.figure(2) #Switch to hard plot
+    plt.plot(y, Hy, label="Lambda: "+str(lam))
+    
+plt.figure(1)
+plt.title('Soft Thresholding')
+plt.legend(loc='upper left')
+plt.show()
+
+plt.figure(2)
+plt.title('Hard Thresholding')
+plt.legend(loc='upper left')
+plt.show()
+
+```
+
+#### Part B
+
+Most of my suggestions on part A I would say apply here as well. In particular, your MSE plot would use a legend showing the sparsity of each line. Just looking at it, I can't tell what the different is between the various colored lines.
