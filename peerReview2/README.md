@@ -1,7 +1,5 @@
 # Peer Review for Ashutosh
 
-WIP
-
 I couldn't find your solution for exercises 4 or the second half of exercises 5 on your github. I just went ahead and reviewed the first part of exercise 5.
 
 ## Exercises 5
