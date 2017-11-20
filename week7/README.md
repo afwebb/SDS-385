@@ -1,23 +1,24 @@
-# Week 6 Exercises
+# Week 7 Exercises
 
-## The Proximal Operator
+## ADMM
 
-<img src="page1.jpg" width="600"/> 
-<img src="page2.jpg" width="600"/> 
-<img src="page3.jpg" width="600"/> 
+The code for this part can be found [here](admm.py)
 
-## Proximal Gradient Descent
+The relevant part for running ADMM:
+```python 
+    x_inv = np.dot( X.T, X ) + rho * np.identity( X.shape[1] )
+    xy = np.dot(X.T, y[:,0])
 
-The code for this part can be found [here](proximal.py)
-
-The coefficients that result using proximal gradient are shown on the left, and the result of using scikit-learns built in lasso is shown on the right:
-
-<img src="coef_prox.png" width="425"/> <img src="coef_lasso.png" width="425"/> 
-
-The two show similar behavior.
-
-## Momentum
+    while not test_converge(err, 10e-8):
+        print calc_mse(np.dot(X, b), y[:,0])+alpha*sum(abs(z))
+        b = np.linalg.solve(x_inv, xy + rho* (z - u ))
+        z = calc_prox( b + u , alpha/rho)
+        u = u + b - z
+        err.append(calc_mse(np.dot(X, b), y[:,0])+alpha*sum(abs(z)))
+    return b, err
+```
+Here are the results:
 
 <img src="likeliehood.png" width="600"/>  
 
-This plot shows the algorithm converging far more quickly when momentum is added.
+This plot shows the admm algorithm converging far more quickly than the proximal gradient method.
