@@ -26,7 +26,6 @@ def calc_linear(S, y, b, k):
     connect = neighbors.kneighbors_graph(S, k, mode='connectivity', metric='euclidean', p=2, n_jobs=-1)
     w = (b**2 * connect - dist.power(2))
     w = w.maximum(scipy.sparse.csr_matrix( (len(y), len(y) ) ) )
-    print w
     w = sk.preprocessing.normalize(w, norm='l1', axis=1)
     y_smoothed = w.dot(y)
     return y_smoothed
@@ -50,13 +49,15 @@ days = dataSet["day"].values
 
 #Perform kernel density estimation for several weighting functions. Time the results
 time0 = time.time()
-#y_gaus = calc_gaussian(lon, lat, y, 5)
+y_gaus = calc_gaussian(lon, lat, y, 5)
 
 time1 = time.time()
-y_linear_10 = calc_linear(S, y, 5, 10)
+y_linear_1 = calc_linear(S, y, 1, 50)
+y_linear_5 = calc_linear(S, y, 5, 50)
+y_linear_20 = calc_linear(S, y, 20, 50)
 
 time2 = time.time()
-y_linear_500 = calc_linear(S, y, 5, 500)
+#y_linear_500 = calc_linear(S, y, 5, 500)
 
 time3 = time.time()
 
@@ -66,7 +67,9 @@ print "Linear time 500: "+str(time3-time2)
 
 #Plot the results for each algorithm
 plot_result(y, "unsmoothed", 1)
-#plot_result(y_gaus, "gaussian", 2)
-plot_result(y_linear_10, "linear_10", 3)
-plot_result(y_linear_500, "linear_500", 4)
+plot_result(y_gaus, "gaussian", 2)
+#plot_result(y_linear_1, "sparse_1", 3)
+#plot_result(y_linear_5, "sparse_5", 4)
+#plot_result(y_linear_20, "sparse_20", 5)
+
 
