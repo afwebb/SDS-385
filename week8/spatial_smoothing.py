@@ -3,43 +3,70 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import sklearn as sk
+import time
 from sklearn import datasets
+from sklearn import neighbors
+from sklearn.neighbors.kde import KernelDensity
+from scipy.sparse.linalg import LinearOperator
 
 #Calculate the weight of each point using the gaussian kernel
-def calc_weight(S, y, b):
-    w_vec = []
+def calc_gaussian(lon, lat, y, b):
+    y_smoothed = []
     for i in xrange(len(y)):
-        w = 0
-        for j in xrange(len(y)):
-            dist = np.abs(S[i,0]-S[j,0])+np.abs(S[i,1]-S[j,1])
-            w+=np.max(0, 3/(4*b)*(1-(dist**2)/(2*b**2)))
-        w_vec.append(w)
-    return w_vec
+        if i%1000==0:
+            print i
+        d = (lon-lon[i])**2 + (lat-lat[i])**2
+        w = 1/b * np.exp(-d**2)/(2*b**2) 
+        y_smoothed.append( np.dot(w, y)/np.sum(w) )
+    return y_smoothed
 
 #Calculate the x vector from the y vector, and the weight vector
-def calc_x(w, y):
-    return w*y/np.sum(w)
+def calc_linear(S, y, b, k):
+    dist = neighbors.kneighbors_graph(S, k, mode='distance', metric='euclidean', p=2, n_jobs=-1)
+    connect = neighbors.kneighbors_graph(S, k, mode='connectivity', metric='euclidean', p=2, n_jobs=-1)
+    w = (b**2 * connect - dist.power(2))
+    w = w.maximum(scipy.sparse.csr_matrix( (len(y), len(y) ) ) )
+    print w
+    w = sk.preprocessing.normalize(w, norm='l1', axis=1)
+    y_smoothed = w.dot(y)
+    return y_smoothed
+
+#Plot the co2 concentration
+def plot_result(y, name, num):
+    plt.figure(num)
+    plt.scatter(lon, lat, c=y, s=0.1, edgecolor="face", vmin=360, vmax=400)
+    plt.ylabel('Latitude')
+    plt.xlabel('Longitude')
+    plt.colorbar()
+    plt.savefig(name+'.png', format = 'png')
 
 #Read in the S and y matrices. Keep the day info too
 dataSet = pd.read_csv('co2.csv')
 S = dataSet[["lon","lat"]].values
+lon = dataSet["lon"].values
+lat = dataSet["lat"].values
 y = dataSet["co2avgret"].values
 days = dataSet["day"].values
 
-#Calculate the w vector, and the x vector
-w = calc_weight(S, y, 1)
-x = calc_x(w, y)
+#Perform kernel density estimation for several weighting functions. Time the results
+time0 = time.time()
+#y_gaus = calc_gaussian(lon, lat, y, 5)
 
-#Plot the data before the smoothing
-plt.figure(0)
-plt.scatter(S[:,0], S[:,1], c=y[:], marker=".", cmap=plt.cm.coolwarm)
-plt.ylabel('Latitude')
-plt.xlabel('Longitude')
-plt.savefig('unsmoothed.png', format = 'png')
+time1 = time.time()
+y_linear_10 = calc_linear(S, y, 5, 10)
 
-#Plot the data after the smoothing
-plt.figure(1)
-plt.scatter(S[:,0], S[:,1], c=x[:], marker=".", cmap=plt.cm.coolwarm)
-plt.ylabel('Latitude')
-plt.xlabel('Longitude')
-plt.savefig('smoothed.png', format = 'png')
+time2 = time.time()
+y_linear_500 = calc_linear(S, y, 5, 500)
+
+time3 = time.time()
+
+print "Gaussian time: "+str(time1-time0)
+print "Linear time 10: "+str(time2-time1)
+print "Linear time 500: "+str(time3-time2)
+
+#Plot the results for each algorithm
+plot_result(y, "unsmoothed", 1)
+#plot_result(y_gaus, "gaussian", 2)
+plot_result(y_linear_10, "linear_10", 3)
+plot_result(y_linear_500, "linear_500", 4)
+
