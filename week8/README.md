@@ -24,4 +24,10 @@ Linear time with 10 nearest neighbors: 2.24 s
 Linear time with 500 nearest neighbors: 92.94 s
 ```
 
-The result for 
+The result for a bandwidth of 1:
+
+<img src="https://github.com/afwebb/SDS-385/blob/master/week8/linear_10.png" width="500">
+
+And for a bandwidth of 100:
+
+<img src="https://github.com/afwebb/SDS-385/blob/master/week8/linear_500.png" width="500">
