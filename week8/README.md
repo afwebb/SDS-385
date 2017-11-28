@@ -13,7 +13,14 @@ I originally tried to do the smoothing with dense matrices, looping over the dat
 I then used scikitlearn's neighbor mapping, which produces a sparse distance matrix. Since exponentiating ruined my sparsity, I used the Epanechnikov kernel instead of the gaussian. The code looks like this:
 
 ```python
-
+def calc_linear(S, y, b, k):
+    dist = neighbors.kneighbors_graph(S, k, mode='distance', metric='euclidean', p=2, n_jobs=-1)
+    connect = neighbors.kneighbors_graph(S, k, mode='connectivity', metric='euclidean', p=2, n_jobs=-1)
+    w = (b**2 * connect - dist.power(2))
+    w = w.maximum(scipy.sparse.csr_matrix( (len(y), len(y) ) ) )
+    w = sk.preprocessing.normalize(w, norm='l1', axis=1)
+    y_smoothed = w.dot(y)
+    return y_smoothed
 ```
 
 This went way faster than  I did this for two different values of bandwidth:
