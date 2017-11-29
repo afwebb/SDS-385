@@ -22,7 +22,7 @@ def calc_gaussian(lon, lat, y, b):
 
 This took about an hour and gave the following result:
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/week8/gaussian.png" width="500">
+<img src="https://github.com/afwebb/SDS-385/blob/master/week8/linear_10.png" width="500">
 
 I then used scikitlearn's neighbor mapping, which produces a sparse distance matrix for k nearest nighbors. There's also a version based on radius, but I couldn't get that working. Since exponentiating ruined my sparsity, I used the Epanechnikov kernel instead of the gaussian. The code looks like this:
 
@@ -52,10 +52,6 @@ The result for a bandwidth of 1:
 For a bandwidth of 5:
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week8/sparse_5.png" width="500">
-
-And for a brandwidth of 20:
-
-<img src="https://github.com/afwebb/SDS-385/blob/master/week8/sparse_20.png" width="500">
 
 And for a brandwidth of 50:
 
