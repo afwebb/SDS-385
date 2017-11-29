@@ -45,7 +45,7 @@ Linear time with 10 nearest neighbors: 2.24 s
 Linear time with 500 nearest neighbors: 92.94 s
 ```
 
-Here are the result for a bandwidth of 1:
+I scaled the number of nearest neighbors to the bandwidth to improve run times: 50 for b=1, 100 for b=5, and 1000 for b=50. Here are the result for a bandwidth of 1:
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week8/sparse_1.png" width="500">
 
