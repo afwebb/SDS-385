@@ -37,7 +37,7 @@ def calc_linear(S, y, b, k):
     return y_smoothed
 ```
 
-This went way faster than  I did this for two different values of bandwidth:
+This went way faster than the gaussian method: 
 
 ```python
 Gaussian time: 3369.64 s
@@ -45,7 +45,7 @@ Linear time with 10 nearest neighbors: 2.24 s
 Linear time with 500 nearest neighbors: 92.94 s
 ```
 
-The result for a bandwidth of 1:
+Here are the result for a bandwidth of 1:
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week8/sparse_1.png" width="500">
 
