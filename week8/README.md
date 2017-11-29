@@ -57,6 +57,6 @@ And for a brandwidth of 20:
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week8/sparse_20.png" width="500">
 
-And for a brandwidth of 100:
+And for a brandwidth of 50:
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week8/linear_500.png" width="500">
