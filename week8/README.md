@@ -6,7 +6,21 @@ Here's how the data looks unsmoothed:
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week8/unsmoothed.png" width="500">
 
-I originally tried to do the smoothing with dense matrices, looping over the data and performing gaussian smoothing. This took about an hour and gave the following result:
+I originally tried to do the smoothing with dense matrices, looping over the data and performing gaussian smoothing. 
+
+```python 
+def calc_gaussian(lon, lat, y, b):
+    y_smoothed = []
+    for i in xrange(len(y)):
+        if i%1000==0:
+            print i
+        d = (lon-lon[i])**2 + (lat-lat[i])**2
+        w = 1/b * np.exp(-d**2)/(2*b**2)
+        y_smoothed.append( np.dot(w, y)/np.sum(w) )
+    return y_smoothed
+```
+
+This took about an hour and gave the following result:
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/week8/gaussian.png" width="500">
 
@@ -16,7 +30,7 @@ I then used scikitlearn's neighbor mapping, which produces a sparse distance mat
 def calc_linear(S, y, b, k):
     dist = neighbors.kneighbors_graph(S, k, mode='distance', metric='euclidean', p=2, n_jobs=-1)
     connect = neighbors.kneighbors_graph(S, k, mode='connectivity', metric='euclidean', p=2, n_jobs=-1)
-    w = (b**2 * connect - dist.power(2))
+    w = 3/(4*b)*( connect - dist.power(2)/b**2)
     w = w.maximum(scipy.sparse.csr_matrix( (len(y), len(y) ) ) )
     w = sk.preprocessing.normalize(w, norm='l1', axis=1)
     y_smoothed = w.dot(y)
