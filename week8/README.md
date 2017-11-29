@@ -40,7 +40,7 @@ def calc_linear(S, y, b, k):
 This went way faster than  I did this for two different values of bandwidth:
 
 ```python
-Gaussian time: 2369.64 s
+Gaussian time: 3369.64 s
 Linear time with 10 nearest neighbors: 2.24 s
 Linear time with 500 nearest neighbors: 92.94 s
 ```
