@@ -5,54 +5,41 @@ import matplotlib.pyplot as plt
 import sklearn as sk
 import time
 from sklearn import datasets
+from sklearn import neighbors
 from sklearn.neighbors.kde import KernelDensity
+from scipy.sparse.linalg import LinearOperator
 
 #Calculate the x vector from the y vector, and the weight vector
-def calc_x(S, kde, y):
-    w = kde.score_samples(S)
-    return w*y/np.sum(w)
+def calc_l(S, k):
+    A = neighbors.kneighbors_graph(S, k, mode='connectivity', metric='euclidean', p=2, n_jobs=-1)
+    W = A.sum(1)
+    W = np.diagflat(W)
+    W = scipy.sparse.csr_matrix(W)
+    return W - A
 
 #Plot the co2 concentration
-def plot_result(y, name, num):
+def plot_result(S, name, num):
     plt.figure(num)
-    plt.scatter(lon, lat, c=y, s=0.1, edgecolor="face", vmin=360, vmax=400)
-    plt.ylabel('Latitude')
-    plt.xlabel('Longitude')
+    #plt.scatter(lon, lat, c=y, s=0.1, edgecolor="face", vmin=360, vmax=400)
+    plt.imshow(S)#, cmap='hot', interpolation='nearest')
     plt.colorbar()
     plt.savefig(name+'.png', format = 'png')
 
 #Read in the S and y matrices. Keep the day info too
-dataSet = pd.read_csv('co2.csv')
-S = dataSet[["lon","lat"]].values
-lon = dataSet["lon"].values
-lat = dataSet["lat"].values
-y = dataSet["co2avgret"].values
-days = dataSet["day"].values
+dataSet = pd.read_csv('fmri_z.csv')
+S = dataSet.values
+n = len(S[0])
+y = np.random.rand(n)
 
 #Perform kernel density estimation for several weighting functions. Time the results
 time0 = time.time()
-
-kde_gaus = KernelDensity(kernel='gaussian', bandwidth=5).fit(S)
-x_gaus = calc_x(S, kde_gaus, y)
-
+L = calc_l(S, 1)
+print L
+L2 = scipy.sparse.csgraph.laplacian(S)
+print L2
 time1 = time.time()
 
-kde_tophat = KernelDensity(kernel='tophat', bandwidth=5).fit(S)
-x_tophat = calc_x(S, kde_tophat, y)
-
-time2 = time.time()
-
-kde_linear = KernelDensity(kernel='linear', bandwidth=5).fit(S)
-x_linear = calc_x(S, kde_linear, y)
-
-time3 = time.time()
-
-print "Gaussian time: "+str(time1-time0)
-print "Tophat time: "+str(time2-time1)
-print "Linear time: "+str(time3-time2)
+print "L time: "+str(time1-time0)
 
 #Plot the results for each algorithm
-plot_result(y, "unsmoothed", 1)
-plot_result(x_gaus, "gaussian", 2)
-plot_result(x_tophat, "tophat", 3)
-plot_result(x_linear, "linear", 4)
+plot_result(S, "heatmap", 0)
