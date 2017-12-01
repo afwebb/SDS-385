@@ -1,4 +1,5 @@
 import scipy
+from scipy import sparse
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -14,14 +15,14 @@ def calc_l(S, k):
     A = neighbors.kneighbors_graph(S, k, mode='connectivity', metric='euclidean', p=2, n_jobs=-1)
     W = A.sum(1)
     W = np.diagflat(W)
-    W = scipy.sparse.csr_matrix(W)
+    W = sparse.csr_matrix(W)
     return W - A
 
 #Plot the co2 concentration
 def plot_result(S, name, num):
     plt.figure(num)
     #plt.scatter(lon, lat, c=y, s=0.1, edgecolor="face", vmin=360, vmax=400)
-    plt.imshow(S)#, cmap='hot', interpolation='nearest')
+    plt.imshow(S, interpolation='nearest')#, cmap='hot', interpolation='nearest')
     plt.colorbar()
     plt.savefig(name+'.png', format = 'png')
 
@@ -34,12 +35,18 @@ y = np.random.rand(n)
 #Perform kernel density estimation for several weighting functions. Time the results
 time0 = time.time()
 L = calc_l(S, 1)
-print L
 L2 = scipy.sparse.csgraph.laplacian(S)
-print L2
+print L2[50,:]
+print S[50,:]
 time1 = time.time()
 
-print "L time: "+str(time1-time0)
+lam = 0.1
+ident = sparse.identity(len(S[0]))
+L_inv = ident - L2
+print L_inv.shape
+L_inv = sparse.linalg.inv(ident)
+S_smoothed = L_inv.dot(S)
 
 #Plot the results for each algorithm
-plot_result(S, "heatmap", 0)
+plot_result(S, "heatmap_unsmoothed", 0)
+plot_result(S_smoothed, "heatmap_smoothed", 1)
