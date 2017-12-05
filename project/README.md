@@ -4,7 +4,7 @@
 
 ## Reading the Data
 
-The Monte Carlo simulations I want to use are stored in ROOT files, so the first step is to convert the information to a form I can use in python. Thankfully, there's a ROOT extension that includes a function for converting ROOT info into CSV format. The script I wrote to do this is (here)[create_csv.py]. 
+The Monte Carlo simulations I want to use are stored in ROOT files, so the first step is to convert the information to a form I can use in python. Thankfully, there's a ROOT extension that includes a function for converting ROOT info into CSV format. The script I wrote to do this is [here](create_csv.py). 
 
 ```python
 
