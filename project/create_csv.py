@@ -8,23 +8,23 @@ dsids = ['363491', '343365', '410155', '410218', '410219']
 
 for dsid in dsids:
     print dsid
-    f = rootpy.io.root_open('/data_ceph/afwebb/gfw2/output/'+dsid+'.root')
+    f = rootpy.io.root_open('root_files/'+dsid+'.root')
     oldTree = f.get('nominal')
     oldTree.SetBranchStatus("*",0)
     for br in branch_list:
         oldTree.SetBranchStatus(br,1)
 
-    newFile = rootpy.io.root_open('small_'+dsid+'.root', 'recreate')
+    newFile = rootpy.io.root_open('root_files/small_'+dsid+'.root', 'recreate')
     newTree = oldTree.CloneTree(0)
     for br in branch_list:
-        newTree.GetBranch(br).SetFile('small_'+dsid+'.root')
+        newTree.GetBranch(br).SetFile('root_files/small_'+dsid+'.root')
         newTree.CopyEntries(oldTree)
 
     newFile.Write()
     newFile.Close()
 
-    g = rootpy.io.root_open('small_'+dsid+'.root')
+    g = rootpy.io.root_open('root_files/small_'+dsid+'.root')
     gTree = g.get('nominal')
 
-    gTree.csv(stream=open(dsid+'.csv', 'w'))
+    gTree.csv(stream=open('root_files/'+dsid+'.csv', 'w'))
 
