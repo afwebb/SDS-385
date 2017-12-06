@@ -25,7 +25,7 @@ This generates a file for signal, and a file for each background. A huge number 
 * DRll01, DRll02, DRll12 - This is the seperation between each pair of leptons.
 * lep_Pt_0, lep_Pt_1, lep_Pt_2 : This is the momentum of the leptons.
 
-Then, rather than reading in the data from each file every time, I wrote a script that combines each file into a single matrix, X, and saves the result. The background samples are given a vector of zeros, while the 
+Then, rather than reading in the data from each file every time, I wrote a script that combines each file into a single matrix, X, and saves the result. The background samples are given a vector of zeros, while the signal is assigned ones.
 
 ## Code
 
