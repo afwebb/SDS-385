@@ -1,0 +1,5 @@
+
+Gradient:
+Time to complete: 323.824832916
+Accuracey of prediction: 0.7443308
+Significance of signal: 357.529370346
