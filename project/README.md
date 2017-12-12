@@ -8,7 +8,7 @@ The Top Quark is an obvious place to look: It's the heaviest fundamental particl
 
 This means means we want to look for events with a Higgs Boson, and a pair of Top Quarks. For this project I'll be trying to distinguish these events from backgrounds using techniques I learned this semester, and a few others from scikit learn, in order to compare their performance on the dataset. 
 
-I use gradient descent, scochastic gradient descent, and ADMM, as well as Boosted Decision Trees, Multi Layer Perceptrons, from scikitlearn.
+I adapted some of the techniques we learned in class to work with my dataset, namely gradient descent, scochastic gradient descent, and ADMM. I'm also using Boosted Decision Trees and Multi Layer Perceptrons from scikit-learn.
 
 ## Reading the Data
 
@@ -26,6 +26,14 @@ Then, rather than reading in the data from each file every time, I wrote a scrip
 
 ## Code
 
-## Results
+### Gradient Descent
+
+### Stochastic Gradient Descent
+
+### ADMM
+
+### BDT
+
+### MLP
 
 ## Conclusion
