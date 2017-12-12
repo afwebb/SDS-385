@@ -24,8 +24,6 @@ This generates a file for signal, and a file for each background. A huge number 
 
 Then, rather than reading in the data from each file every time, I wrote a script that combines each file into a single matrix, X, and saves the result, see [here](read_data.py). The background samples are given a vector of zeros, while the 
 
-## Code
-
 ### Gradient Descent
 
 ### Stochastic Gradient Descent
