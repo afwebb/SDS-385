@@ -26,7 +26,17 @@ Then, rather than reading in the data from each file every time, I wrote a scrip
 
 ### Gradient Descent
 
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/result_gradient.png" width="500">
+
+```python
+Time to complete: 323.824832916
+Accuracey of prediction: 0.7443308
+Significance of signal: 357.529370346
+```
+
 ### Stochastic Gradient Descent
+
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/result_sgd.png" width="500">
 
 ### ADMM
 
