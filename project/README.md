@@ -12,9 +12,15 @@ The role of the Higgs Boson is to give particles their mass. This makes its inte
 
 Two gluons from the collided protons iteract, which produces a Higgs and Top Quark pairs. The Top Quarks almost always decay to a b-quark and a W-boson, and events where the Higgs decays to two W's are easier to study than some other channels. This means means we want to look for events with two b-quarks, which show up in the detector as "b-jets". W bosons decay to either 2 quarks or a lepton and a neutrino. I focused on events with three leptons, so one W decayed to quarks, the rest to leptons. So what we look for in the detector is events with 4-jets, two of which are b-jets, and three leptons.    
 
-The problem is there are a few other ways to get that. For this project I'll be trying to distinguish these events from backgrounds using techniques I learned this semester, and a few others from scikit learn, in order to compare their performance on the dataset. I adapted some of the techniques we learned in class to work with my dataset, namely gradient descent, scochastic gradient descent. I'm also using Boosted Decision Trees and Multi Layer Perceptrons from scikit-learn.
+The problem is there are a few other ways to get that final state. Here's one example:
+
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/wz_3l.PNG" width="500">
+
+For this project I'll be trying to distinguish the signal Higgs events from the most common backgrounds using techniques I learned this semester, and a few others from scikit learn, in order to compare their performance on the dataset. I adapted some of the techniques we learned in class to work with my dataset, namely gradient descent, scochastic gradient descent. I'm also using Boosted Decision Trees and Multi Layer Perceptrons from scikit-learn.
 
 ## Reading the Data
+
+Since we can't tell from data what signal events and background events look like, we simulate them instead. Monte Carlo techniques are used to simulate the physics interactions we're interested in and how those interactions would end up looking in the detector, and we compare these simulations to the data as a way of comparing theory and experiment. More relevant here though, we can ask our simulations which events are signal, and which are background, and therefore build a classifier based on the simulations. 
 
 The Monte Carlo simulations I want to use are stored in ROOT files, so the first step is to convert the information to a form I can use in python. Thankfully, there's a ROOT extension that includes a function for converting ROOT info into CSV format. The script I wrote to do this is [here](create_csv.py). 
 
