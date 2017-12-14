@@ -78,6 +78,10 @@ One advantage of BDTs is that they require few input parameters on the part of t
 
 The code I used to produce run my BDT can be found [here](bdt.py). 
 
+``` python 
+Accuracey: 0.92
+```
+
 ### MLP
 
 An MLP, or multi-layer perceptron, is an example of a neural net. Input features of the model are combined and fead into an activation function, typically hyperbolic tangent or a sigmoid. These activation functions serve as a hidden layer of the neural net. The output of the hidden layer can be fead into another hidden layer, before finally producing a classification output.
