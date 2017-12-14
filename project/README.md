@@ -14,7 +14,7 @@ Two gluons from the collided protons iteract, which produces a Higgs and Top Qua
 
 The problem is there are a few other ways to get that final state. Here's one example:
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/wz_3l.PNG" width="300">
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/wz_3l.PNG" width="600">
 
 For this project I'll be trying to distinguish the signal Higgs events from the most common backgrounds using techniques I learned this semester, and a few others from scikit learn, in order to compare their performance on the dataset. I adapted some of the techniques we learned in class to work with my dataset, namely gradient descent, scochastic gradient descent. I'm also using Boosted Decision Trees and Multi Layer Perceptrons from scikit-learn.
 
