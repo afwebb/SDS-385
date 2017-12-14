@@ -62,6 +62,6 @@ The topics we discussed in class were mainly focused on linear regression, but m
 
 ### MLP
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/MLP.jpg" width="300">
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/MLP.jpg" width="400">
 
 ## Conclusion
