@@ -48,6 +48,8 @@ Just like the inclass exercises, I ran both with and without momentum.
 
 ### BDT
 
+The topics we discussed in class were mainly focused on linear regression, but many non-linear classifiers are based on the same fundational principles. Gradient Boosted Decisions Trees are one example: As with linear regression, the gradient is used to find a minimum of a convex loss function.
+
 <img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/tree_example.png" width="500">
 
 ### MLP
