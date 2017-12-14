@@ -38,7 +38,11 @@ Significance of signal: 357.529370346
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/project/result_sgd.png" width="500">
 
-### ADMM
+### Proximal Gradient Descent
+
+Just like the inclass exercises, I ran both with and without momentum.
+
+### ADMM 
 
 ### BDT
 
