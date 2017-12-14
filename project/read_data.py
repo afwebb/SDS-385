@@ -11,7 +11,7 @@ from tempfile import TemporaryFile
 # Read in csv files one at a time, add them to X. Have y be a series of ones for ttH sample, zero for backgrounds
 for dsid in ['343365', '410155', '410218', '410219','363491']:
     print "Adding " +dsid
-    X_temp = pd.read_csv('root_files/'+dsid+".csv", nrows=500000)
+    X_temp = pd.read_csv('root_files/'+dsid+".csv", nrows=5000)
 
     if dsid == '343365':
         y_temp = np.ones(X_temp.shape[0])

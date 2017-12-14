@@ -10,9 +10,10 @@ from time import time
 #Calculate mse of estimate
 def calc_mse(y_pred, y):
     mse = 0
-    for i,j in zip(y,y_pred):
-        mse+=np.square(i-j)
-    mse=mse/len(y)
+    #for i,j in zip(y,y_pred):
+    #    mse+=np.square(i-j)
+    #mse=mse/len(y)
+    mse = (np.square(y_pred-y)).sum()
     return mse
 
 #calculate prediction vector
@@ -62,7 +63,11 @@ def run_prox(X, y, alpha):
     b = None
     b = np.random.rand(X.shape[1])
     err = []
+    i=0
     while not test_converge(err, 10e-5):
+        if i%2==0:
+            print i
+        i+=1
         u = b + 0.1 * (X.transpose()).dot( y - X.dot(b) )/(2*y.shape[0]) + alpha * (b > 0).astype(float) - alpha * (b < 0).astype(float)
         b = calc_prox(u, alpha)
         err.append(calc_mse(X.dot(b), y )+alpha*sum(abs(b)))
@@ -79,8 +84,11 @@ def run_admm(X, y, alpha, rho = 1):
 
     x_inv = np.dot( X.transpose(), X ) + rho * np.identity( X.shape[1] )
     xy = np.dot(X.transpose(), y)
-
+    i = 0
     while not test_converge(err, 10e-5):
+        if i%2==0:
+            print i
+        i+=1
         print calc_mse(np.dot(X, b), y)+alpha*sum(abs(z))
         b = np.linalg.solve(x_inv, xy + rho* (z - u ))
         z = calc_prox( b + u , alpha/rho)
@@ -96,8 +104,11 @@ def run_mom(X, y, alpha):
     s = [1,]
     b_vec = [b.copy(),]
     z = b.copy()
-
+    i = 0
     while not test_converge(err, 10e-8):
+        if i%2==0:
+            print i
+        i+=1
         u = z + 0.1*np.dot(X.transpose(), y - X.dot(z))/(2*y.shape[0])
         b = calc_prox(u, alpha)
         b_vec.append(b)
@@ -116,11 +127,11 @@ n_samples = X.shape[0]
 
 #Plot the loss for proximal, momentum, and admm
 time0 = time()
-b_prox, err_prox = run_prox(X, y, 0.01)
+#b_prox, err_prox = run_prox(X, y, 0.01)
 time1 = time()
 print "past prox"
 
-b_mom, err_mom = run_mom(X, y, 0.01)
+#b_mom, err_mom = run_mom(X, y, 0.01)
 time2 = time()
 print "past mom"
 
