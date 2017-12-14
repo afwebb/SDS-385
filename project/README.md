@@ -14,7 +14,7 @@ Two gluons from the collided protons iteract, which produces a Higgs and Top Qua
 
 The problem is there are a few other ways to get that final state. Here's one example:
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/wz_3l.PNG" width="600">
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/wz_3l.PNG" width="300">
 
 For this project I'll be trying to distinguish the signal Higgs events from the most common backgrounds using techniques I learned this semester, and a few others from scikit learn, in order to compare their performance on the dataset. I adapted some of the techniques we learned in class to work with my dataset, namely gradient descent, scochastic gradient descent. I'm also using Boosted Decision Trees and Multi Layer Perceptrons from scikit-learn.
 
@@ -26,7 +26,7 @@ The Monte Carlo simulations I want to use are stored in ROOT files, so the first
 
 Choosing the feature variables to include is fairly challenging, and while prior knowledge about the physics involved might give you hints about which variables will give you seperation between signal and background, I'm often surprised by which features end up working best. So, I plotted all of the variables I thought might be useful and chose from there.
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/variables_id_c3.png" width="300">
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/variables_id_c3.png" width="600">
 
 Its not worth getting into exactly what all these variables represent, but here's what a few of them are:
 
