@@ -141,7 +141,7 @@ def predict_acc(b):
 
 #Read in a section of the file
 def read_file(f, i, batch_size):
-    X,y = sk.datasets.load_svmlight_file(f, offset=i*batch_size, length=batch_size)
+    X,y = sk.datasets.load_svmlight_file(f, n_features=16, offset=i*batch_size, length=batch_size)
     X = X.tocsr()
     return X, y
     

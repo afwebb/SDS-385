@@ -6,7 +6,6 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.datasets import make_gaussian_quantiles
 
-<<<<<<< HEAD
 #Read in the data file, f. Return feature matrix X, and data vector, y
 def read_file(f, i, batch_size):
     X,y = sk.datasets.load_svmlight_file(f)#, n_features=None, length=-1)
@@ -84,7 +83,7 @@ plt.legend(loc='upper right')
 plt.savefig('probability.png', format='png')
 
 '''
-=======
+
 def read_file(f, i, batch_size):
     X,y = sk.datasets.load_svmlight_file(f)# offset=i*batch_size, length=batch_size)
     X = X.tocsr()
@@ -155,4 +154,3 @@ plt.tight_layout()
 plt.subplots_adjust(wspace=0.35)
 plt.show()
 
->>>>>>> f4c7219a0bfe27140fddc19e1c2c49a6416cddac

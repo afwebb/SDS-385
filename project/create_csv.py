@@ -4,7 +4,7 @@ import rootpy.io
 from rootpy.tree import Tree
 
 # Define the variables we want to use
-branch_list = ['nJets_OR_T', 'nJets_OR_T_MV2c10_70', 'MET_RefFinal_et', 'HT', 'HT_lep', "HT_jets", 'lead_jetPt', 'sublead_jetPt', 'best_Z_Mll', 'best_Z_other_Mll', 'DRll01', 'DRll02', 'DRll12', 'lep_Pt_0', 'lep_Pt_1', 'lep_Pt_2']
+branch_list = ['nJets_OR_T', 'nJets_OR_T_MV2c10_70', 'MET_RefFinal_et', 'HT', 'HT_lep', "HT_jets", 'lead_jetPt', 'sublead_jetPt', 'best_Z_Mll', 'best_Z_other_Mll', 'DRll01', 'DRll02', 'DRll12', 'lep_Pt_0', 'lep_Pt_1', 'lep_Pt_2', "DRlj00", "min_DRl0b", "sublead_jetPt", "min_DRl1j", "DPhij0MET"]
 
 # List the data set IDs to use
 dsids = ['363491', '343365', '410155', '410218', '410219']
@@ -33,5 +33,5 @@ for dsid in dsids:
     gTree = g.get('nominal')
 
     # Write the information from the new file to a csv
-    gTree.csv(stream=open('root_files/'+dsid+'.csv', 'w'))
+    gTree.csv(stream=open('root_files/'+dsid+'.csv', 'w'), include_labels=True)
 
