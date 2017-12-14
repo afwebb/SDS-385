@@ -8,13 +8,13 @@ My research has to do with studying the properties of the Higgs Boson. While we 
 
 The role of the Higgs Boson is to give particles their mass. This makes its interactions with the Top Quark is a good candidate for study: The Top Quark the heaviest fundamental particle, and therefore has the strongest interaction with the Higgs. My research involves analysing data produced by the LHC (Large Hadron Collider) to study the interactions of the Higgs boson and the Top Quark. The interaction we're looking for looks something like this:
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/ttH_ML.png" width="500">
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/ttH_ML.png" width="300">
 
 Two gluons from the collided protons iteract, which produces a Higgs and Top Quark pairs. The Top Quarks almost always decay to a b-quark and a W-boson, and events where the Higgs decays to two W's are easier to study than some other channels. This means means we want to look for events with two b-quarks, which show up in the detector as "b-jets". W bosons decay to either 2 quarks or a lepton and a neutrino. I focused on events with three leptons, so one W decayed to quarks, the rest to leptons. So what we look for in the detector is events with 4-jets, two of which are b-jets, and three leptons.    
 
 The problem is there are a few other ways to get that final state. Here's one example:
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/wz_3l.PNG" width="500">
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/wz_3l.PNG" width="300">
 
 For this project I'll be trying to distinguish the signal Higgs events from the most common backgrounds using techniques I learned this semester, and a few others from scikit learn, in order to compare their performance on the dataset. I adapted some of the techniques we learned in class to work with my dataset, namely gradient descent, scochastic gradient descent. I'm also using Boosted Decision Trees and Multi Layer Perceptrons from scikit-learn.
 
@@ -58,7 +58,7 @@ Just like the inclass exercises, I ran both with and without momentum.
 
 The topics we discussed in class were mainly focused on linear regression, but many non-linear classifiers are based on the same fundational principles. Gradient Boosted Decisions Trees are one example: As with linear regression, the gradient is used to find a minimum of a convex loss function.
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/tree_example.png" width="500">
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/tree_example.png" width="300">
 
 ### MLP
 
