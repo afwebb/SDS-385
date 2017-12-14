@@ -6,6 +6,8 @@ The Higgs is interesting because particles get their mass by interacting with it
 
 The Top Quark is an obvious place to look: It's the heaviest fundamental particle, and therefore has the strongest interaction with the Higgs. My research involves analysing data produced by the LHC (Large Hadron Collider) to study the interactions of the Higgs boson and the Top Quark.
 
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/ttH_ML.png" width="500">
+
 This means means we want to look for events with a Higgs Boson, and a pair of Top Quarks. For this project I'll be trying to distinguish these events from backgrounds using techniques I learned this semester, and a few others from scikit learn, in order to compare their performance on the dataset. 
 
 I adapted some of the techniques we learned in class to work with my dataset, namely gradient descent, scochastic gradient descent, and ADMM. I'm also using Boosted Decision Trees and Multi Layer Perceptrons from scikit-learn.
@@ -26,7 +28,7 @@ Then, rather than reading in the data from each file every time, I wrote a scrip
 
 ### Gradient Descent
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/project/result_gradient.png" width="500">
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/result_gradient.png" width="500">
 
 ```python
 Time to complete: 323.824832916
@@ -36,7 +38,7 @@ Significance of signal: 357.529370346
 
 ### Stochastic Gradient Descent
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/project/result_sgd.png" width="500">
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/result_sgd.png" width="500">
 
 ### Proximal Gradient Descent
 
@@ -45,6 +47,8 @@ Just like the inclass exercises, I ran both with and without momentum.
 ### ADMM 
 
 ### BDT
+
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/tree_example.png" width="500">
 
 ### MLP
 
