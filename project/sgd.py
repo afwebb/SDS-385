@@ -112,9 +112,8 @@ plt.plot(l)
 
 plt.ylabel('-log likliehood')
 plt.xlabel('Iteration')
-plt.savefig('result_sgd.png', format = 'png')
+plt.savefig('plots/result_sgd.png', format = 'png')
 
-#b_tot = b_tot/np.linalg.norm(b_tot, ord=1)
 acc, significance = predict_acc(b)
 print "Accuracey of prediction: "+str(acc)
 print "Significance of signal: "+str(significance)

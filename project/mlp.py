@@ -2,9 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import sklearn as sk
-from sklearn.ensemble import AdaBoostClassifier
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.datasets import make_gaussian_quantiles
+from sklearn.neural_network import MLPClassifier
 
 #Read in the data file, f. Return feature matrix X, and data vector, y
 def read_file(f, i, batch_size):
@@ -30,12 +29,10 @@ X, y = read_file("test_data", 0, 10)
 #Normalize X
 #X = sk.preprocessing.normalize(X, norm='l1', axis=1)
 
-#Define the BDT
-bdt = AdaBoostClassifier(DecisionTreeClassifier(max_depth=1),
-                         algorithm="SAMME",
-                         n_estimators=50)
+#Define the MLP
 
-#Fit the BDT to data
+
+#Fit the MLP to data
 X_train, y_train, X_test, y_test = cross_val(X, y, 10)
 
 bdt.fit(X_train, y_train)
@@ -153,4 +150,4 @@ plt.tight_layout()
 plt.subplots_adjust(wspace=0.35)
 plt.show()
 
-
+>>>>>>> f4c7219a0bfe27140fddc19e1c2c49a6416cddac
