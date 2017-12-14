@@ -10,10 +10,8 @@ from time import time
 #Calculate mse of estimate
 def calc_mse(y_pred, y):
     mse = 0
-    #for i,j in zip(y,y_pred):
-    #    mse+=np.square(i-j)
-    #mse=mse/len(y)
     mse = (np.square(y_pred-y)).sum()
+    mse=mse/len(y)
     return mse
 
 #calculate prediction vector
@@ -135,7 +133,7 @@ print "past prox"
 time2 = time()
 print "past mom"
 
-b_admm, err_admm = run_admm(X, y, 0.001)
+b_admm, err_admm = run_admm(X, y, 0.01)
 time3 = time()
 print "admm"
 
@@ -144,9 +142,9 @@ time_mom = time2-time1
 time_admm = time3-time2
 
 plt.figure(6)
-plt.semilogx(err_prox, label='Proximal')
-plt.semilogx(err_mom, label='With Momentum')
-plt.semilogx(err_admm, label='ADMM')
+plt.plot(err_admm, label='Proximal')
+#plt.semilogx(err_mom, label='With Momentum')
+#plt.semilogx(err_admm, label='ADMM')
 plt.ylabel('L')
 plt.xlabel('iteration')
 plt.legend(loc='upper right')
