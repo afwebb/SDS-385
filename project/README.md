@@ -82,9 +82,9 @@ The code I used to produce run my BDT can be found [here](bdt.py).
 Accuracey: 0.96
 ```
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/bdt_error.jpg" width="500">
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/bdt_error.png" width="500">
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/bdt_dis.jpg" width="500">
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/bdt_dis.png" width="500">
 
 ### MLP
 
