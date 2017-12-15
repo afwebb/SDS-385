@@ -94,6 +94,8 @@ An MLP, or multi-layer perceptron, is an example of a neural net. Input features
 
 Neural nets generally, and MLPs specifically, tend to be well suited for finding complex patterns in data
 
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/mlp_result.png" width="500">
+
 ## Conclusion
 
 While multivariate techniques generally outperform the linear ones, there are quite a few reasons one might not want to avoid using a non-linear classifier. 
