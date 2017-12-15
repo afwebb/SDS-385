@@ -119,7 +119,7 @@ Time to complete: 35.6580569744
 Training set score: 0.953730
 ```
 
-Momentum clearly makes a big difference, and surprisingly even gives better results. The results here are comparable to using a BDT, if slightly worse. 
+Momentum clearly makes a big difference, and surprisingly even gives better results. The results here are comparable to using a BDT, if slightly worse, and momentum manages to make it converge significantly faster than the BDT.
 
 ## Conclusion
 
