@@ -16,9 +16,9 @@ The problem is there are a few other ways to get that final state. Here's one ex
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/wz_3l.PNG" width="300">
 
-For this project I'll be trying to distinguish the signal Higgs events from the most common backgrounds using techniques I learned this semester, and a few others from scikit learn, in order to compare their performance on the dataset. I adapted some of the techniques we learned in class to work with my dataset, namely gradient descent, scochastic gradient descent. I'm also using Boosted Decision Trees and Multi Layer Perceptrons from scikit-learn.
+For this project I'll be trying to distinguish the signal Higgs events from the most common backgrounds using techniques I learned this semester, and a few others from scikit learn, in order to compare their performance on the dataset.
 
-## Reading the Data
+## The dataset
 
 Since we can't tell from data what signal events and background events look like, we simulate them instead. Monte Carlo techniques are used to simulate the physics interactions we're interested in and how those interactions would end up looking in the detector, and we compare these simulations to the data as a way of comparing theory and experiment. More relevant here though, we can ask our simulations which events are signal, and which are background, and therefore build a classifier based on the simulations. 
 
@@ -37,32 +37,35 @@ Its not worth getting into exactly what all these variables represent, but here'
 * lep_Pt_0: This is the momentum of the leptons.
 * lead_jet_Pt: The momentum of the highest energy jet.
 
+Then, rather than reading in the data from each file every time, I wrote a script that combines each file into a single matrix, X, and saves the result, see [here](read_data.py). I write 100,000 events to the file, since adding more didn't give me any better results.
 
-Then, rather than reading in the data from each file every time, I wrote a script that combines each file into a single matrix, X, and saves the result, see [here](read_data.py). The background samples are given a vector of zeros, while the 
+There are a few complications I'm not including here. For one, I'm training on an equal amount of signal and background, when in reality, the signal is about ~10 times less common than background. I did try to do classification on a proportionate amount of signal and background, but the classifiers ended up doing almost no better than you would be assuming everything was background. For another, I'm trusting the Monte Carlo to exactly model my data. For an actual paper, a lot of work would go into validating the simulations, and taking into account their inherent uncertainties.
+
+I'm ingnoring these things because I'm more interested in how well these techniques work on this kind of data, and which ones work best.
 
 ### Gradient Descent
+
+I started with trying to do the best linear classification I could for the problem. I ended up choosing gradient descent over, for example, the lasso, since that was designed to exploit sparsity and my data is fairly dense. The feature I've selected has already winnowed out most of the irrevelent features, so doing full gradient descent with a penalty term seemed like the best approach.
 
 [Here](gradient_descent.py) is the code for this part. Using full gradient descent, the loss function converged after about 170 iterations. This took a long time to complete, and did an okay job of accurately predicting whether an event was signal or background:
 
 ```python
-Time to complete: 323.82
-Accuracey of prediction: 0.74
+Time to complete: 423.82
+Accuracey of prediction: 0.88
 ```
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/result_gradient.png" width="500">
 
-
-
-Using stochastic gradient (code located [here](sgd.py) ) converged far more quickly, 
+Using stochastic gradient (code located [here](sgd.py) ) converged far more quickly, and acheived a slightly better result, surprisingly, than gradient descent did. 
 
 ``` python
 Time to complete: 4.09
-Accuracey of prediction: 0.84
+Accuracey of prediction: 0.89
 ```
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/result_sgd.png" width="500">
 
-
+This actually acheived a better result than I expected it to; a ninety percent accuracey is quite good, considering how similar background and signal events are. The variable distribution plots I included above show very similar shapes, which made me doubt how useful a linear classifier would be.
 
 ### BDT
 
@@ -76,15 +79,21 @@ This basic algorithm can be improve by introducing an l2 penalty term, that disc
 
 One advantage of BDTs is that they require few input parameters on the part of the user. For example, the model I used in scikit learn only required I specify the learning rate, the max depth of the trees, and the number of trees. This makes BDTs relatively stable, and helps prevent some of the pitfalls that can come with too much fine tuning.
 
-The code I used to produce run my BDT can be found [here](bdt.py). 
+The code I used to produce run my BDT can be found [here](bdt.py). The algorithm assigns each event a total score, based on where it falls in each of the decision trees.  The plot below each event a total score, based on where it ends up at the bottom of each tree. I plotted this output for signal and background events, which gives an idea of how well the algorithm is doing at seperating signal from background:
+
+<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/bdt_dis.png" width="500">
 
 ``` python 
+Time to complete: 146.4
 Accuracey: 0.96
 ```
+This is a pretty significant improvement over linear regression. Of course, it took quite a lot longer than stochastic gradient descent to get there.
+
+I ended up using 250 trees and a learning rate of 0.1 to get this result. This seemed to give the best results; adding more trees didn't help. I plotted the error as a function of the number of trees in the model, and it suggests things converged nicely:
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/bdt_error.png" width="500">
 
-<img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/bdt_dis.png" width="500">
+This seems like a fair plot to compare to the shape of the likelihood plot I showed for gradient descent, and the shape even looks surprisingly similar.
 
 ### MLP
 
@@ -92,9 +101,25 @@ An MLP, or multi-layer perceptron, is an example of a neural net. Input features
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/MLP.jpg" width="400">
 
-Neural nets generally, and MLPs specifically, tend to be well suited for finding complex patterns in data
+Neural nets generally, and MLPs specifically, tend to be well suited for finding complex patterns in data, making them using for things like image recognition. Most people in particle physics use BDTs most of the time, but I have seen a few instances where neural nets end up giving better results. 
+
+My mlp code can be found [here](mlp.py). I discovered an option to add momentum to the algroithm, and ran it with a constant learning rate, as well as momentum and Nesterov momentum. I got the following result:
 
 <img src="https://github.com/afwebb/SDS-385/blob/master/project/plots/mlp_result.png" width="500">
+
+```python
+training: constant learning-rate
+Time to complete: 104.886443853
+Training set score: 0.950080
+training: with momentum
+Time to complete: 29.8559989929
+Training set score: 0.951400
+training: with Nesterov's momentum
+Time to complete: 35.6580569744
+Training set score: 0.953730
+```
+
+Momentum clearly makes a big difference, and surprisingly even gives better results. The results here are comparable to using a BDT, if slightly worse. 
 
 ## Conclusion
 
@@ -103,3 +128,6 @@ While multivariate techniques generally outperform the linear ones, there are qu
 One problem is that the final result we get after training on a BDT for example, obscures some of the physics behind that result. Saying we observed a certain number of events in this complex region defined by the BDT limits the number of conclusions you can draw from your analysis. For trying to discover the Higgs, for example, this might be okay: You could conclude that the number of events in this complex BDT output region is consistent with data only if the Higgs Boson exists. If, on the other hand, you're trying to measure something precisely, a linear approach is probably better. With a linear system, have a well defined region of space (e.g. events with 3 leptons whose energy is above a certain value determined by the classifier) which you can use to extrapolate, for example, how often you expect a particular interaction to occur. 
 
 Another issue that needs to be considered is systematic uncertainties. The effect of things like the resolution of the detector, the theoretical limitations of our predictions, are hard to disintangle with a nonlinear classifier. If a particular systematic uncertainty has a large impact on our result, it can be difficult to see where in the classifier this systematic is having an affect.  
+
+That said, my results suggest that these nonlinear algorithms do improve the results you get, though not as I might hve expected. 
+These results suggest to me that using an MVA can be valuable, but the improvement you acheive form using them needs to be carefully weighed against some of the downsides.
