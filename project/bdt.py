@@ -25,7 +25,7 @@ def cross_val(X, y, n):
     return X_train, y_train, X_test, y_test
 
 #Read in the data
-X, y = read_file("test_data", 0, 10)
+X, y = read_file("input_data", 0, 10)
 
 #Normalize X
 #X = sk.preprocessing.normalize(X, norm='l1', axis=1)
@@ -65,7 +65,6 @@ for val in np.linspace(-0.8, 0.2, num=200):
     temp_sig = s/np.sqrt(b)
     if temp_sig > significance:
         significance = temp_sig
-        print val
 
 print significance
 
