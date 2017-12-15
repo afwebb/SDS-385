@@ -1,60 +1,50 @@
-import numpy as np
+print(__doc__)
 import matplotlib.pyplot as plt
-
 import sklearn as sk
-from sklearn.datasets import make_gaussian_quantiles
 from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import MinMaxScaler
+from sklearn import datasets
 
-#Read in the data file, f. Return feature matrix X, and data vector, y
-def read_file(f, i, batch_size):
-    X,y = sk.datasets.load_svmlight_file(f)#, n_features=None, length=-1)
+# different learning rate schedules and momentum parameters
+params = [{'solver': 'sgd', 'learning_rate': 'constant', 'momentum': 0,
+           'learning_rate_init': 0.2},
+          {'solver': 'sgd', 'learning_rate': 'constant', 'momentum': .9,
+           'nesterovs_momentum': False, 'learning_rate_init': 0.2},
+          {'solver': 'sgd', 'learning_rate': 'constant', 'momentum': .9,
+           'nesterovs_momentum': True, 'learning_rate_init': 0.2}]
+
+labels = ["constant learning-rate", "with momentum",
+          "with Nesterov's momentum"]
+
+plot_args = [{'c': 'red', 'linestyle': '-'},
+             {'c': 'green', 'linestyle': '-'},
+             {'c': 'blue', 'linestyle': '-'}]
+
+
+def plot_on_dataset(X, y):
+    # for each dataset, plot learning for each learning strategy
     X = X.tocsr()
-    return X, y
+    X = X.todense()
+    X = MinMaxScaler().fit_transform(X)
+    mlps = []
+    max_iter=400
 
-#Peform n-fold cross-validation. Return X_train, y_train, X_test, y_test
-def cross_val(X, y, n):
-    num = y.shape[0]/n
-    
-    X_test = X[:num]
-    y_test = y[:num]
-    
-    X_train = X[num:]
-    y_train = y[num:]
+    for label, param in zip(labels, params):
+        print("training: %s" % label)
+        mlp = MLPClassifier(verbose=0, random_state=0,
+                            max_iter=max_iter, **param)
+        mlp.fit(X, y)
+        mlps.append(mlp)
+        print("Training set score: %f" % mlp.score(X, y))
+        print("Training set loss: %f" % mlp.loss_)
+    plt.figure(0)
+    for mlp, label, args in zip(mlps, labels, plot_args):
+            plt.plot(mlp.loss_curve_, label=label, **args)
+    plt.legend(labels, loc="upper right")
+    plt.savefig('plots/mlp_result.png', format='png')
 
-    return X_train, y_train, X_test, y_test
+# load data
+X,y = sk.datasets.load_svmlight_file('test_data')
 
-#Read in the data
-X, y = read_file("input_data", 0, 10)
+plot_on_dataset(X, y) 
 
-#Normalize X
-#X = sk.preprocessing.normalize(X, norm='l1', axis=1)
-
-#Define the MLP
-mlp =  MLPClassifier()
-
-#Fit the MLP to data
-X_train, y_train, X_test, y_test = cross_val(X, y, 10)
-
-mlp.fit(X_train, y_train)
-score = mlp.score(X_test, y_test)
-print score
-'''
-#print output.shape
-#plt.figure(0)
-#plt.hist(pred_sig, label='signal')
-#plt.hist(pred_bkg, label='background')
-#plt.hist([score_sig, score_bkg])
-#plt.legend(loc='upper right')
-#plt.savefig('probability.png', format='png')
-
-significance = 0
-for val in np.linspace(-0.8, 0.2, num=200):
-    s = len(score_sig[score_sig > val] )
-    b = len(score_bkg[score_bkg > val] )
-    temp_sig = s/np.sqrt(b)
-    if temp_sig > significance:
-        significance = temp_sig
-        print val
-
-print significance
-'''

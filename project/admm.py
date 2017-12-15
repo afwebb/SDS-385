@@ -56,6 +56,21 @@ def cross_val(X, y, alpha, n):
         
     return err/n
 
+#Run proximal gradient descent
+def run_prox(X, y, alpha):
+    b = None
+    b = np.random.rand(X.shape[1])
+    err = []
+    i=0
+    while not test_converge(err, 10e-5):
+        if i%2==0:
+            print i
+        i+=1
+        u = b + 0.1 * (X.transpose()).dot( y - X.dot(b) )/(2*y.shape[0]) + alpha * (b > 0).astype(float) - alpha * (b < 0).astype(float)
+        b = calc_prox(u, alpha)
+        err.append(calc_mse(X.dot(b), y )+alpha*sum(abs(b)))
+    return b, err
+
 #Run admm
 def run_admm(X, y, alpha, rho = 1):
 
@@ -67,17 +82,37 @@ def run_admm(X, y, alpha, rho = 1):
 
     x_inv = np.dot( X.transpose(), X ) + rho * np.identity( X.shape[1] )
     xy = np.dot(X.transpose(), y)
-
-    i=0
+    i = 0
     while not test_converge(err, 10e-5):
+        if i%2==0:
+            print i
         i+=1
-        print i
-        if i > 200:
-            break
+        print calc_mse(np.dot(X, b), y)+alpha*sum(abs(z))
         b = np.linalg.solve(x_inv, xy + rho* (z - u ))
         z = calc_prox( b + u , alpha/rho)
         u = u + b - z
-        err.append(sk.metrics.mean_squared_error(np.dot(X, b), y))#+alpha*sum(abs(z)))
+        err.append(calc_mse(np.dot(X, b), y)+alpha*sum(abs(z)))
+    return b, err
+
+#Run proximal gradient descent with momentum
+def run_mom(X, y, alpha):
+    b = None
+    b = np.random.rand(X.shape[1])
+    err = []
+    s = [1,]
+    b_vec = [b.copy(),]
+    z = b.copy()
+    i = 0
+    while not test_converge(err, 10e-8):
+        if i%2==0:
+            print i
+        i+=1
+        u = z + 0.1*np.dot(X.transpose(), y - X.dot(z))/(2*y.shape[0])
+        b = calc_prox(u, alpha)
+        b_vec.append(b)
+        s.append((1+np.sqrt(1+4*s[-1]**2))/2)
+        z = b_vec[-1] + ((s[-1]-1)/s[-2])*(b_vec[-1]-b_vec[-2]) + alpha * (b > 0).astype(float) - alpha * (b < 0).astype(float)
+        err.append(calc_mse( X.dot(b), y )+alpha*sum(abs(b)))
     return b, err
 
 #Read in data

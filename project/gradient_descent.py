@@ -43,7 +43,7 @@ def run_descent(e, step_size):
     i = 0 #track iteration count
 
     #Initialize X, y, b, and l
-    X,y= read_file('input_data')
+    X,y= read_file('test_data')
     b = np.random.rand(X.shape[1])
     l = []
 
@@ -100,7 +100,7 @@ batch_size = 100000
 
 #Run adagrad, looping over the files
 start = time()
-b, l = run_descent(0.0001, 0.1)
+b, l = run_descent(0.000001, 0.1)
 end = time()
 
 print "Time to complete: "+str(end-start)

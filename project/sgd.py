@@ -43,13 +43,13 @@ def run_descent(e, step_size, batch_size):
     i = 0 #track iteration count
 
     #Initialize X, y, b, and l
-    X,y= read_file('input_data', i, batch_size)
+    X,y= read_file('test_data', i, batch_size)
     b = np.random.rand(X.shape[1])
     l = []
 
     while not test_converge(l, e):
         i+=1
-        X,y= read_file('input_data', i, batch_size) #Read in the data a little at a time
+        X,y= read_file('test_data', i, batch_size) #Read in the data a little at a time
         if i%20==0:
             #step_size=0.5*step_size #decrease step size over time
             print i
@@ -94,7 +94,7 @@ def predict_acc(b):
 
 #Read in a section of the file
 def read_file(f, i, batch_size):
-    X,y = sk.datasets.load_svmlight_file(f, n_features=17, offset=i*batch_size, length=batch_size)
+    X,y = sk.datasets.load_svmlight_file(f, n_features=21, offset=i*batch_size, length=batch_size)
     X = X.tocsr()
     return X, y
     
@@ -102,7 +102,7 @@ batch_size = 100000
 
 #Run adagrad, looping over the files
 start = time()
-b, l = run_descent(0.00001, 0.05, batch_size)
+b, l = run_descent(0.00001, 0.03, batch_size)
 end = time()
 
 print "Time to complete: "+str(end-start)
